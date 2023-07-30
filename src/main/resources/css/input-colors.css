@@ -1,0 +1,6 @@
+.invalid {
+    -fx-background-color: #F47575;
+}
+.notEditable {
+    -fx-background-color: #B4B4B4;
+}

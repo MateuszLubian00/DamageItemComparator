@@ -1,0 +1,9 @@
+.switchButton {
+    -fx-background-color: #E8E8E8;
+    -fx-border-style: solid;
+    -fx-border-color: #D4D4D4;
+}
+.pressed {
+    -fx-background-color: #00000000;
+    -fx-border-color: #B4B4B4;
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="pane" prefHeight="425.0" prefWidth="625.0" stylesheets="@../../../../css/main-frame.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.mateuszlubian00.itemcompare.controller.MainFrameController">
+   <children>
+      <HBox prefHeight="25.0" prefWidth="625.0">
+         <children>
+            <Button fx:id="pressed" accessibleRole="MENU_BUTTON" mnemonicParsing="false" onAction="#switchToPlayerStats" text="Player">
+               <styleClass>
+                  <String fx:value="switchButton" />
+                  <String fx:value="pressed" />
+               </styleClass></Button>
+            <Button accessibleRole="MENU_BUTTON" mnemonicParsing="false" onAction="#switchToItems" styleClass="switchButton" text="Items" />
+            <Button accessibleRole="MENU_BUTTON" mnemonicParsing="false" onAction="#switchToEnemies" styleClass="switchButton" text="Enemies" />
+            <Button accessibleRole="MENU_BUTTON" mnemonicParsing="false" onAction="#switchToGraphs" styleClass="switchButton" text="Graphs" />
+         </children>
+      </HBox>
+      <AnchorPane prefHeight="400.0" prefWidth="625.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+         <children>
+            <Group />
+         </children></AnchorPane>
+   </children>
+</AnchorPane>

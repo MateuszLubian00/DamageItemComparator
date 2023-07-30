@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sun Jul 30 18:48:06 CEST 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-0189-a7b3-3209-00000b5e94c0 
+on database directory memory:E:\-\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\Damage Item Comparator\data with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@70177ecd 
+Loaded from file:/C:/Users/Boingo/.m2/repository/org/apache/derby/derby/10.16.1.1/derby-10.16.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=20.0.1+9-29
+user.dir=E:\-\AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\Damage Item Comparator
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
