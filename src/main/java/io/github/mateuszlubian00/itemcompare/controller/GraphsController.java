@@ -4,11 +4,13 @@ import io.github.mateuszlubian00.itemcompare.model.Actor;
 import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.TextField;
 
 public class GraphsController {
 
@@ -22,6 +24,16 @@ public class GraphsController {
     protected AreaChart<String,Number> chart5Seconds;
     @FXML
     protected AreaChart<String,Number> chart10Seconds;
+    @FXML
+    protected AreaChart<String,Number> chartCustomSeconds;
+    @FXML
+    protected AreaChart<String,Number> chartCustomAttacks;
+    @FXML
+    protected TextField customSeconds;
+    @FXML
+    protected TextField customSecondsIncrement;
+    @FXML
+    protected TextField customAttack;
     protected Actor playerSet1;
     protected Actor playerSet2;
     protected Actor enemySet;
@@ -38,8 +50,76 @@ public class GraphsController {
         setChartAttacks(10, chart10Attacks);
         setChartAttacks(30, chart30Attacks);
 
-        setChartSeconds(5D, chart5Seconds);
-        setChartSeconds(10D, chart10Seconds);
+        setChartSeconds(5D, 0.5, chart5Seconds);
+        setChartSeconds(10D, 0.5, chart10Seconds);
+
+        // Set up custom charts with junk data, otherwise it doesn't scale properly
+        setChartAttacks(5, chartCustomAttacks);
+        setChartSeconds(5d, 1d, chartCustomSeconds);
+    }
+
+    @FXML
+    protected void setCustomAttacks() {
+        int attacks = 0;
+        customAttack.getStyleClass().remove("invalid");
+
+        try {
+            attacks = Integer.parseInt(customAttack.getText());
+        } catch (NumberFormatException e) {
+            customAttack.getStyleClass().add("invalid");
+            return;
+        }
+
+        if (attacks < 2) {
+            customAttack.getStyleClass().add("invalid");
+            return;
+        }
+
+        setChartAttacks(attacks, chartCustomAttacks);
+    }
+
+    @FXML
+    protected void setCustomSeconds() {
+        boolean exit = false;
+        double seconds = 0D;
+        double increment = 0D;
+        customSeconds.getStyleClass().remove("invalid");
+        customSecondsIncrement.getStyleClass().remove("invalid");
+
+        // Setting up time
+
+        try {
+            seconds = Double.parseDouble(customSeconds.getText());
+        } catch (NumberFormatException e) {
+            customSeconds.getStyleClass().add("invalid");
+            exit = true;
+        }
+
+        if (seconds < 1) {
+            customAttack.getStyleClass().add("invalid");
+            exit = true;
+        }
+
+        // Setting up increments
+
+        try {
+            increment = Double.parseDouble(customSecondsIncrement.getText());
+        } catch (NumberFormatException e) {
+            customSecondsIncrement.getStyleClass().add("invalid");
+            exit = true;
+        }
+
+        if (increment < 0.1) {
+            customAttack.getStyleClass().add("invalid");
+            exit = true;
+        }
+
+        // If any field resulted in error
+        if (exit) {
+            return;
+        }
+
+        setChartSeconds(seconds, increment, chartCustomSeconds);
     }
 
     /** Special case to show only 1 attack */
@@ -72,6 +152,8 @@ public class GraphsController {
     }
 
     protected void setChartAttacks(int attacks, AreaChart<String, Number> chart) {
+        chart.setData(FXCollections.observableArrayList());
+
         XYChart.Series<String,Number> set1 = new XYChart.Series<>();
         XYChart.Series<String,Number> set2 = new XYChart.Series<>();
         set1.setName("With Item 1");
@@ -111,7 +193,9 @@ public class GraphsController {
         chart.getData().addAll(set1, set2);
     }
 
-    protected void setChartSeconds(Double seconds, AreaChart<String, Number> chart) {
+    protected void setChartSeconds(Double seconds,Double timeIncrement, AreaChart<String, Number> chart) {
+        chart.setData(FXCollections.observableArrayList());
+
         XYChart.Series<String,Number> set1 = new XYChart.Series<>();
         XYChart.Series<String,Number> set2 = new XYChart.Series<>();
         set1.setName("With Item 1");
@@ -133,7 +217,7 @@ public class GraphsController {
         double totalTime1 = 0D;
         double totalTime2 = 0D;
 
-        for (double i = 0.5; i <= seconds; i += 0.5D) {
+        for (double i = timeIncrement; i <= seconds; i += timeIncrement) {
             while (totalTime1 + attackTime1 < i) {
                 if (crit1 >= 100D) {
                     total1 += ((2* attack1) - defense);
@@ -157,6 +241,11 @@ public class GraphsController {
             set2.getData().add(new XYChart.Data<>(String.valueOf(i), total2));
         }
 
-        chart.getData().addAll(set1, set2);
+        // Due to settings and attack speeds, there is nothing to show
+        if (set1.getData().isEmpty() && set2.getData().isEmpty()) {
+            return;
+        } else {
+            chart.getData().addAll(set1, set2);
+        }
     }
 }
