@@ -10,8 +10,6 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 
-import java.sql.SQLException;
-
 public class GraphsController {
 
     @FXML
@@ -29,7 +27,7 @@ public class GraphsController {
     protected Actor enemySet;
 
     @FXML
-    protected void initialize() throws SQLException {
+    protected void initialize() {
         ObservableList<Actor> actorList = ActorAccess.selectManyActors();
 
         playerSet1 = CalculatorUtil.calculateWithItem(0).apply(actorList.get(0));
@@ -113,7 +111,7 @@ public class GraphsController {
         chart.getData().addAll(set1, set2);
     }
 
-    protected void setChartSeconds(Double seconds, AreaChart chart) {
+    protected void setChartSeconds(Double seconds, AreaChart<String, Number> chart) {
         XYChart.Series<String,Number> set1 = new XYChart.Series<>();
         XYChart.Series<String,Number> set2 = new XYChart.Series<>();
         set1.setName("With Item 1");

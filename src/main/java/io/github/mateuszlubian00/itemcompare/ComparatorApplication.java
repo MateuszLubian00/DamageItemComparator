@@ -3,6 +3,7 @@ package io.github.mateuszlubian00.itemcompare;
 import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
 import io.github.mateuszlubian00.itemcompare.model.ItemAccess;
 import io.github.mateuszlubian00.itemcompare.util.DBUtil;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -12,7 +13,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class ComparatorApplication extends Application {
 
@@ -52,16 +52,17 @@ public class ComparatorApplication extends Application {
         SubScene someSubscene = new SubScene(new FXMLLoader(ComparatorApplication.class.getResource(name)).load(), sub.getWidth(), sub.getHeight());
 
         // Make SubScene resizable
-        someSubscene.widthProperty().bind(mainPane.widthProperty());
-        someSubscene.heightProperty().bind(mainPane.heightProperty().subtract(25));
+        someSubscene.widthProperty().bind(sub.widthProperty());
+        someSubscene.heightProperty().bind(sub.heightProperty());
 
         g.getChildren().add(someSubscene);
         sub.getChildren().set(0, g);
     }
 
     /** Helper method to create a database with some initial data values.
+     *  Normally not needed, but this app uses in-memory database.
      */
-    public static void initializeData() throws SQLException {
+    private static void initializeData() {
         DBUtil.dbExecuteUpdate(
                 "CREATE TABLE actors (" +
                 "ID int PRIMARY KEY , " +
@@ -88,12 +89,12 @@ public class ComparatorApplication extends Application {
         ItemAccess.insertItem(0, 0L, 0L, 50L, 0.1D, 0D);
         // Item #2
         ItemAccess.insertItem(1, 0L, 0L, 10L, 0.75D, 5D);
-        // Item #3, test item
+        // Item #3
         ItemAccess.insertItem(2, 10L, 20L, 0L, 0.25D, 0D);
         // TODO: more items
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args)  {
         initializeData();
         launch();
     }

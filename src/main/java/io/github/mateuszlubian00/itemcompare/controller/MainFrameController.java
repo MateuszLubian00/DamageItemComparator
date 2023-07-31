@@ -1,6 +1,7 @@
 package io.github.mateuszlubian00.itemcompare.controller;
 
 import io.github.mateuszlubian00.itemcompare.ComparatorApplication;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

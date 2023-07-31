@@ -10,47 +10,57 @@ import java.sql.SQLException;
 
 public class ActorAccess {
 
-    public static Actor selectActor (int ID) throws SQLException {
+    public static Actor selectActor (int ID) {
         String selectStatement = "SELECT * FROM actors WHERE ID="+ID;
         ResultSet resultSet = DBUtil.dbExecuteQuery(selectStatement);
         return getActorFromResultSet(resultSet);
     }
 
-    private static Actor getActorFromResultSet(ResultSet resultSet) throws SQLException
-    {
+    private static Actor getActorFromResultSet(ResultSet resultSet) {
         Actor actor = null;
-        if (resultSet.next()) {
-            actor = new Actor();
-            actor.setAttack(resultSet.getLong("ATTACK"));
-            actor.setAttackSpeed(resultSet.getDouble("ATTACK_SPEED"));
-            actor.setHP(resultSet.getLong("HP"));
-            actor.setDefense(resultSet.getLong("DEFENSE"));
-            actor.setCriticalHitChance(resultSet.getDouble("CRITICAL_HIT_CHANCE"));
+        try {
+            if (resultSet.next()) {
+                actor = new Actor();
+                actor.setAttack(resultSet.getLong("ATTACK"));
+                actor.setAttackSpeed(resultSet.getDouble("ATTACK_SPEED"));
+                actor.setHP(resultSet.getLong("HP"));
+                actor.setDefense(resultSet.getLong("DEFENSE"));
+                actor.setCriticalHitChance(resultSet.getDouble("CRITICAL_HIT_CHANCE"));
+            }
+        } catch (SQLException e) {
+            System.out.println("There has been a fatal error while accessing result set " + resultSet);
+            System.exit(0);
         }
+
         return actor;
     }
 
-    public static ObservableList<Actor> selectManyActors () throws SQLException {
+    public static ObservableList<Actor> selectManyActors() {
         String selectStatement = "SELECT * FROM actors";
         ResultSet resultSet = DBUtil.dbExecuteQuery(selectStatement);
         return getActorList(resultSet);
     }
 
-    private static ObservableList<Actor> getActorList(ResultSet resultSet) throws SQLException {
+    private static ObservableList<Actor> getActorList(ResultSet resultSet) {
         ObservableList<Actor> actorList = FXCollections.observableArrayList();
-        while (resultSet.next()) {
-            Actor actor = new Actor();
-            actor.setAttack(resultSet.getLong("ATTACK"));
-            actor.setAttackSpeed(resultSet.getDouble("ATTACK_SPEED"));
-            actor.setHP(resultSet.getLong("HP"));
-            actor.setDefense(resultSet.getLong("DEFENSE"));
-            actor.setCriticalHitChance(resultSet.getDouble("CRITICAL_HIT_CHANCE"));
-            actorList.add(actor);
+        try {
+            while (resultSet.next()) {
+                Actor actor = new Actor();
+                actor.setAttack(resultSet.getLong("ATTACK"));
+                actor.setAttackSpeed(resultSet.getDouble("ATTACK_SPEED"));
+                actor.setHP(resultSet.getLong("HP"));
+                actor.setDefense(resultSet.getLong("DEFENSE"));
+                actor.setCriticalHitChance(resultSet.getDouble("CRITICAL_HIT_CHANCE"));
+                actorList.add(actor);
+            }
+        } catch (SQLException e) {
+            System.out.println("There has been a fatal error while accessing result set " + resultSet);
+            System.exit(0);
         }
         return actorList;
     }
 
-    public static void updateActorField (int ID, String field, Object value) throws SQLException {
+    public static void updateActorField (int ID, String field, Object value) {
         String updateStatement =
                         "UPDATE actors\n" +
                         "   SET " + field + " = " + value + "\n" +
@@ -58,7 +68,7 @@ public class ActorAccess {
         DBUtil.dbExecuteUpdate(updateStatement);
     }
 
-    public static void insertActor (int ID, Long HP, Long Defense, Long Attack, Double AttackSpeed, double CritChance) throws SQLException {
+    public static void insertActor (int ID, Long HP, Long Defense, Long Attack, Double AttackSpeed, double CritChance) {
         String updateStmt =
                         "INSERT INTO actors\n" +
                         "(ID, HP, DEFENSE, ATTACK, ATTACK_SPEED, CRITICAL_HIT_CHANCE)\n" +

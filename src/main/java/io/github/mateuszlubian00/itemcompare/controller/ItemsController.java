@@ -2,14 +2,13 @@ package io.github.mateuszlubian00.itemcompare.controller;
 
 import io.github.mateuszlubian00.itemcompare.model.Item;
 import io.github.mateuszlubian00.itemcompare.model.ItemAccess;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-
-import java.sql.SQLException;
 
 public class ItemsController {
 
@@ -31,12 +30,7 @@ public class ItemsController {
 
     @FXML
     protected void initialize() {
-        ObservableList<Item> itemList;
-        try {
-            itemList = ItemAccess.selectManyItems();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        ObservableList<Item> itemList = ItemAccess.selectManyItems();
 
         itemPicker.setValue("Item " + (ID + 1));
         selectedItem.setText("Item " + (ID + 1));
@@ -54,9 +48,9 @@ public class ItemsController {
     }
 
     @FXML
-    protected void updateHealth( ) throws SQLException {
+    protected void updateHealth() {
         itemHealth.getStyleClass().remove("invalid");
-        Long health;
+        long health;
         try {
             health = Long.parseLong(itemHealth.getText());
         } catch (NumberFormatException e) {
@@ -68,9 +62,9 @@ public class ItemsController {
     }
 
     @FXML
-    protected void updateDefense() throws SQLException {
+    protected void updateDefense() {
         itemDefense.getStyleClass().remove("invalid");
-        Long defense;
+        long defense;
         try {
             defense = Long.parseLong(itemDefense.getText());
         } catch (NumberFormatException e) {
@@ -82,9 +76,9 @@ public class ItemsController {
     }
 
     @FXML
-    protected void updateAttack() throws SQLException {
+    protected void updateAttack() {
         itemAttack.getStyleClass().remove("invalid");
-        Long attack;
+        long attack;
         try {
             attack = Long.parseLong(itemAttack.getText());
         } catch (NumberFormatException e) {
@@ -96,9 +90,9 @@ public class ItemsController {
     }
 
     @FXML
-    protected void updateAttackSpeed() throws SQLException {
+    protected void updateAttackSpeed() {
         itemAttackSpeed.getStyleClass().remove("invalid");
-        Double attackSpeed;
+        double attackSpeed;
         try {
             attackSpeed = Double.parseDouble(itemAttackSpeed.getText());
         } catch (NumberFormatException e) {
@@ -110,9 +104,9 @@ public class ItemsController {
     }
 
     @FXML
-    protected void updateCritChance() throws SQLException {
+    protected void updateCritChance() {
         itemCritChance.getStyleClass().remove("invalid");
-        Double critChance;
+        double critChance;
         try {
             critChance = Double.parseDouble(itemCritChance.getText());
         } catch (NumberFormatException e) {
@@ -132,12 +126,7 @@ public class ItemsController {
     }
 
     protected void refreshData() {
-        Item item;
-        try {
-            item = ItemAccess.selectItem(ID);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Item item = ItemAccess.selectItem(ID);
 
         selectedItem.setText("Item " + (ID + 1));
 
@@ -149,7 +138,7 @@ public class ItemsController {
     }
 
     @FXML
-    protected void updateAll() throws SQLException {
+    protected void updateAll() {
         updateHealth();
         updateDefense();
         updateAttack();
