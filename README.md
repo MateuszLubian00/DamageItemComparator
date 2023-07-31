@@ -4,7 +4,7 @@ Small application made to help compare different builds in different video games
 
 ### How to use
 
-Download the latest [Release](https://github.com/MateuszLubian00/DamageItemComparator/releases) and double click it to open, or alternatively launch it through a command line `java -jar itemCompare.jar`. Java 17 is required, while Java 20 or higher is recommended.
+Download the latest [Release](https://github.com/MateuszLubian00/DamageItemComparator/releases) and double click it to open, or alternatively launch it through a command line `java -jar itemCompare.jar`. Java 20 is required, releases are built for Microsoft Windows.
 
 To build this app yourself, you need JavaFX SDK installed and properly set up. You can find the newest version on [Gluon HQ](https://gluonhq.com/products/javafx/) website.
 

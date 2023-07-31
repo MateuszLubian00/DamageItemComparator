@@ -6,7 +6,7 @@
 
     <groupId>io.github.MateuszLubian00</groupId>
     <artifactId>itemCompare</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.1</version>
     <name>Damage Item Comparator</name>
 
     <properties>
