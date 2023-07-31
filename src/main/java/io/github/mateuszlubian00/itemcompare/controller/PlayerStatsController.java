@@ -7,7 +7,6 @@ import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-import java.sql.SQLException;
 import java.util.function.Function;
 
 public class PlayerStatsController {
@@ -39,13 +38,8 @@ public class PlayerStatsController {
 
 
     @FXML
-    private void initialize () throws SQLException {
-        Actor actor;
-        try {
-            actor = ActorAccess.selectActor(0);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    private void initialize () {
+        Actor actor = ActorAccess.selectActor(0);
 
         cachedActor = actor;
 
@@ -60,7 +54,7 @@ public class PlayerStatsController {
     }
 
     @FXML
-    protected void updateAttack() throws SQLException {
+    protected void updateAttack() {
         baseAttack.getStyleClass().remove("invalid");
         Long attack;
         try {
@@ -76,7 +70,7 @@ public class PlayerStatsController {
     }
 
     @FXML
-    protected void updateAttackSpeed() throws SQLException {
+    protected void updateAttackSpeed() {
         baseAttackSpeed.getStyleClass().remove("invalid");
         Double attackSpeed;
         try {
@@ -92,7 +86,7 @@ public class PlayerStatsController {
     }
 
     @FXML
-    protected void updateCritChance() throws SQLException {
+    protected void updateCritChance() {
         baseCritChance.getStyleClass().remove("invalid");
         Double critChance;
         try {
@@ -108,7 +102,7 @@ public class PlayerStatsController {
     }
 
     @FXML
-    protected void updateAll() throws SQLException {
+    protected void updateAll() {
         updateAttack();
         updateAttackSpeed();
         updateCritChance();

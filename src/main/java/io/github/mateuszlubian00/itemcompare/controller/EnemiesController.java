@@ -3,10 +3,10 @@ package io.github.mateuszlubian00.itemcompare.controller;
 import io.github.mateuszlubian00.itemcompare.model.Actor;
 import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-import java.sql.SQLException;
 import java.util.function.Function;
 
 public class EnemiesController {
@@ -27,12 +27,7 @@ public class EnemiesController {
 
     @FXML
     private void initialize () {
-        Actor actor;
-        try {
-            actor = ActorAccess.selectActor(1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        Actor actor = ActorAccess.selectActor(1);
 
         cachedActor = actor;
 
@@ -45,7 +40,7 @@ public class EnemiesController {
     }
 
     @FXML
-    protected void updateHealth() throws SQLException {
+    protected void updateHealth() {
         baseHealth.getStyleClass().remove("invalid");
         Long health;
         try {
@@ -61,7 +56,7 @@ public class EnemiesController {
     }
 
     @FXML
-    protected void updateDefense() throws SQLException {
+    protected void updateDefense() {
         baseDefense.getStyleClass().remove("invalid");
         Long defense;
         try {
@@ -77,7 +72,7 @@ public class EnemiesController {
     }
 
     @FXML
-    protected void updateAll() throws SQLException {
+    protected void updateAll() {
         updateHealth();
         updateDefense();
     }
