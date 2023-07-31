@@ -8,9 +8,9 @@
    <children>
       <ScrollPane fitToHeight="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <AnchorPane>
                <children>
-                  <VBox alignment="CENTER" prefHeight="1000.0" prefWidth="610.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox alignment="CENTER" prefWidth="610.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <BarChart fx:id="chart1Attack" title="1 Attack">
                           <xAxis>
@@ -36,16 +36,8 @@
                             <NumberAxis side="LEFT" />
                           </yAxis>
                         </AreaChart>
-                        <AreaChart fx:id="chart100Attacks" title="100 Attacks">
-                          <xAxis>
-                            <CategoryAxis side="BOTTOM" />
-                          </xAxis>
-                          <yAxis>
-                            <NumberAxis side="LEFT" />
-                          </yAxis>
-                        </AreaChart>
                         <AreaChart fx:id="chart5Seconds" layoutX="10.0" layoutY="510.0" title="5 Seconds of Attacks">
-                           <xAxis>
+                                   <xAxis>
                               <CategoryAxis side="BOTTOM" />
                            </xAxis>
                            <yAxis>
@@ -53,14 +45,6 @@
                            </yAxis>
                         </AreaChart>
                         <AreaChart fx:id="chart10Seconds" layoutX="10.0" layoutY="810.0" title="10 Seconds of Attacks">
-                           <xAxis>
-                              <CategoryAxis side="BOTTOM" />
-                           </xAxis>
-                           <yAxis>
-                              <NumberAxis side="LEFT" />
-                           </yAxis>
-                        </AreaChart>
-                        <AreaChart fx:id="chart25Seconds" layoutX="10.0" layoutY="843.0" title="25 Seconds of Attacks">
                            <xAxis>
                               <CategoryAxis side="BOTTOM" />
                            </xAxis>
