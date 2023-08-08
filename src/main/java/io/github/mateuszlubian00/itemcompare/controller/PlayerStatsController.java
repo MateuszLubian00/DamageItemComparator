@@ -2,8 +2,8 @@ package io.github.mateuszlubian00.itemcompare.controller;
 
 import io.github.mateuszlubian00.itemcompare.model.Actor;
 import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
-
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -55,14 +55,9 @@ public class PlayerStatsController {
 
     @FXML
     protected void updateAttack() {
-        baseAttack.getStyleClass().remove("invalid");
-        Long attack;
-        try {
-            attack = Long.parseLong(baseAttack.getText());
-        } catch (NumberFormatException e) {
-            baseAttack.getStyleClass().add("invalid");
-            return;
-        }
+        Long attack = null;
+        attack = CalculatorUtil.updateFromText(baseAttack, attack);
+        if (attack == null) {return;}
 
         cachedActor.setAttack(attack);
         updateCalculations();
@@ -71,14 +66,9 @@ public class PlayerStatsController {
 
     @FXML
     protected void updateAttackSpeed() {
-        baseAttackSpeed.getStyleClass().remove("invalid");
-        Double attackSpeed;
-        try {
-            attackSpeed = Double.parseDouble(baseAttackSpeed.getText());
-        } catch (NumberFormatException e) {
-            baseAttackSpeed.getStyleClass().add("invalid");
-            return;
-        }
+        Double attackSpeed = null;
+        attackSpeed = CalculatorUtil.updateFromText(baseAttackSpeed, attackSpeed);
+        if (attackSpeed == null) {return;}
 
         cachedActor.setAttackSpeed(attackSpeed);
         updateCalculations();
@@ -87,14 +77,9 @@ public class PlayerStatsController {
 
     @FXML
     protected void updateCritChance() {
-        baseCritChance.getStyleClass().remove("invalid");
-        Double critChance;
-        try {
-            critChance = Double.parseDouble(baseCritChance.getText());
-        } catch (NumberFormatException e) {
-            baseCritChance.getStyleClass().add("invalid");
-            return;
-        }
+        Double critChance = null;
+        critChance = CalculatorUtil.updateFromText(baseCritChance, critChance);
+        if (critChance == null) {return;}
 
         cachedActor.setCriticalHitChance(critChance);
         updateCalculations();

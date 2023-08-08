@@ -60,16 +60,11 @@ public class GraphsController {
 
     @FXML
     protected void setCustomAttacks() {
-        int attacks = 0;
-        customAttack.getStyleClass().remove("invalid");
+        Integer attacks = null;
+        attacks = CalculatorUtil.updateFromText(customAttack, attacks);
+        if (attacks == null) {return;}
 
-        try {
-            attacks = Integer.parseInt(customAttack.getText());
-        } catch (NumberFormatException e) {
-            customAttack.getStyleClass().add("invalid");
-            return;
-        }
-
+        // Special case to not allow less than 2 attacks.
         if (attacks < 2) {
             customAttack.getStyleClass().add("invalid");
             return;
@@ -81,43 +76,31 @@ public class GraphsController {
     @FXML
     protected void setCustomSeconds() {
         boolean exit = false;
-        double seconds = 0D;
-        double increment = 0D;
-        customSeconds.getStyleClass().remove("invalid");
-        customSecondsIncrement.getStyleClass().remove("invalid");
+        Double seconds = null;
+        Double increment = null;
+        seconds = CalculatorUtil.updateFromText(customSeconds, seconds);
+        increment = CalculatorUtil.updateFromText(customSecondsIncrement, increment);
 
         // Setting up time
 
-        try {
-            seconds = Double.parseDouble(customSeconds.getText());
-        } catch (NumberFormatException e) {
-            customSeconds.getStyleClass().add("invalid");
+        if (seconds == null) {
             exit = true;
-        }
-
-        if (seconds < 1) {
-            customAttack.getStyleClass().add("invalid");
+        } else if (seconds < 1) {
+            customSeconds.getStyleClass().add("invalid");
             exit = true;
         }
 
         // Setting up increments
 
-        try {
-            increment = Double.parseDouble(customSecondsIncrement.getText());
-        } catch (NumberFormatException e) {
+        if (increment == null) {
+            exit = true;
+        } else if (increment < 0.1) {
             customSecondsIncrement.getStyleClass().add("invalid");
             exit = true;
         }
 
-        if (increment < 0.1) {
-            customAttack.getStyleClass().add("invalid");
-            exit = true;
-        }
-
-        // If any field resulted in error
-        if (exit) {
-            return;
-        }
+        // If any field contains wrong values
+        if (exit) {return;}
 
         setChartSeconds(seconds, increment, chartCustomSeconds);
     }

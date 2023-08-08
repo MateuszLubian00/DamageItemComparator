@@ -2,6 +2,7 @@ package io.github.mateuszlubian00.itemcompare.controller;
 
 import io.github.mateuszlubian00.itemcompare.model.Item;
 import io.github.mateuszlubian00.itemcompare.model.ItemAccess;
+import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -36,7 +37,6 @@ public class ItemsController {
         selectedItem.setText("Item " + (ID + 1));
 
         ObservableList<String> choices = FXCollections.observableArrayList();
-
         for (int i = 1; i <= itemList.size(); i++) {
             choices.add("Item " + i);
         }
@@ -49,70 +49,45 @@ public class ItemsController {
 
     @FXML
     protected void updateHealth() {
-        itemHealth.getStyleClass().remove("invalid");
-        long health;
-        try {
-            health = Long.parseLong(itemHealth.getText());
-        } catch (NumberFormatException e) {
-            itemHealth.getStyleClass().add("invalid");
-            return;
-        }
+        Long health = null;
+        health = CalculatorUtil.updateFromText(itemHealth, health);
+        if (health == null) {return;}
 
         ItemAccess.updateItemField(ID, "BONUS_HP", health);
     }
 
     @FXML
     protected void updateDefense() {
-        itemDefense.getStyleClass().remove("invalid");
-        long defense;
-        try {
-            defense = Long.parseLong(itemDefense.getText());
-        } catch (NumberFormatException e) {
-            itemDefense.getStyleClass().add("invalid");
-            return;
-        }
+        Long defense = null;
+        defense = CalculatorUtil.updateFromText(itemDefense, defense);
+        if (defense == null) {return;}
 
         ItemAccess.updateItemField(ID, "BONUS_DEFENSE", defense);
     }
 
     @FXML
     protected void updateAttack() {
-        itemAttack.getStyleClass().remove("invalid");
-        long attack;
-        try {
-            attack = Long.parseLong(itemAttack.getText());
-        } catch (NumberFormatException e) {
-            itemAttack.getStyleClass().add("invalid");
-            return;
-        }
+        Long attack = null;
+        attack = CalculatorUtil.updateFromText(itemAttack, attack);
+        if (attack == null) {return;}
 
         ItemAccess.updateItemField(ID, "BONUS_ATTACK", attack);
     }
 
     @FXML
     protected void updateAttackSpeed() {
-        itemAttackSpeed.getStyleClass().remove("invalid");
-        double attackSpeed;
-        try {
-            attackSpeed = Double.parseDouble(itemAttackSpeed.getText());
-        } catch (NumberFormatException e) {
-            itemAttackSpeed.getStyleClass().add("invalid");
-            return;
-        }
+        Double attackSpeed = null;
+        attackSpeed = CalculatorUtil.updateFromText(itemAttackSpeed, attackSpeed);
+        if (attackSpeed == null) {return;}
 
         ItemAccess.updateItemField(ID, "BONUS_ATTACK_SPEED", attackSpeed);
     }
 
     @FXML
     protected void updateCritChance() {
-        itemCritChance.getStyleClass().remove("invalid");
-        double critChance;
-        try {
-            critChance = Double.parseDouble(itemCritChance.getText());
-        } catch (NumberFormatException e) {
-            itemCritChance.getStyleClass().add("invalid");
-            return;
-        }
+        Double critChance = null;
+        critChance = CalculatorUtil.updateFromText(itemCritChance, critChance);
+        if (critChance == null) {return;}
 
         ItemAccess.updateItemField(ID, "BONUS_CRITICAL_HIT_CHANCE", critChance);
     }

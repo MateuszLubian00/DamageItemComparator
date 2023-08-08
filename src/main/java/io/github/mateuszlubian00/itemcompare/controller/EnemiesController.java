@@ -41,14 +41,9 @@ public class EnemiesController {
 
     @FXML
     protected void updateHealth() {
-        baseHealth.getStyleClass().remove("invalid");
-        Long health;
-        try {
-            health = Long.parseLong(baseHealth.getText());
-        } catch (NumberFormatException e) {
-            baseHealth.getStyleClass().add("invalid");
-            return;
-        }
+        Long health = null;
+        health = CalculatorUtil.updateFromText(baseHealth, health);
+        if (health == null) {return;}
 
         cachedActor.setHP(health);
         updateCalculations();
@@ -57,14 +52,9 @@ public class EnemiesController {
 
     @FXML
     protected void updateDefense() {
-        baseDefense.getStyleClass().remove("invalid");
-        Long defense;
-        try {
-            defense = Long.parseLong(baseDefense.getText());
-        } catch (NumberFormatException e) {
-            baseDefense.getStyleClass().add("invalid");
-            return;
-        }
+        Long defense = null;
+        defense = CalculatorUtil.updateFromText(baseDefense, defense);
+        if (defense == null) {return;}
 
         cachedActor.setDefense(defense);
         updateCalculations();
