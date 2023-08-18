@@ -16,19 +16,10 @@ public class ItemAccess {
 
     private static Item getItemFromResultSet(ResultSet resultSet) {
         Item item = null;
-        try {
-            if (resultSet.next()) {
-                item = new Item();
-                item.setBonusAttack(resultSet.getLong("BONUS_ATTACK"));
-                item.setBonusAttackSpeed(resultSet.getDouble("BONUS_ATTACK_SPEED"));
-                item.setBonusHP(resultSet.getLong("BONUS_HP"));
-                item.setBonusDefense(resultSet.getLong("BONUS_DEFENSE"));
-                item.setBonusCriticalHitChance(resultSet.getDouble("BONUS_CRITICAL_HIT_CHANCE"));
-            }
-        } catch (SQLException e) {
-            System.out.println("There has been a fatal error while accessing result set " + resultSet);
-            System.exit(0);
-        }
+
+        ObservableList<Item> list = getItemList(resultSet);
+        item = list.get(0);
+
         return item;
     }
 
