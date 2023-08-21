@@ -3,13 +3,15 @@ package io.github.mateuszlubian00.itemcompare.util;
 import io.github.mateuszlubian00.itemcompare.model.Actor;
 import io.github.mateuszlubian00.itemcompare.model.Item;
 import io.github.mateuszlubian00.itemcompare.model.ItemAccess;
+import io.github.mateuszlubian00.itemcompare.model.StatCalculator;
 import javafx.scene.control.TextInputControl;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.function.Function;
 
 public class CalculatorUtil {
+
+    /** Stored calculator class for any sort of calculations. */
+    public static StatCalculator calculator = null;
 
     /** Creates a function that applies item statistics to an Actor, returning a new Actor. */
     public static Function<Actor, Actor> calculateWithItem(Integer itemID){
