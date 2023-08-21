@@ -22,19 +22,13 @@ public class EnemiesController {
     protected TextField calcHealth;
     @FXML
     protected TextField calcDefense;
-    protected Actor cachedActor;
-    protected Function<Actor, Actor> itemSet;
 
     @FXML
     private void initialize () {
         Actor actor = ActorAccess.selectActor(1);
 
-        cachedActor = actor;
-
         baseHealth.setText(String.valueOf(actor.getHP()));
         baseDefense.setText(String.valueOf(actor.getDefense()));
-
-        itemSet = CalculatorUtil.calculateWithItem(2);
 
         updateCalculations();
     }
@@ -45,7 +39,7 @@ public class EnemiesController {
         health = CalculatorUtil.updateFromText(baseHealth, health);
         if (health == null) {return;}
 
-        cachedActor.setHP(health);
+        CalculatorUtil.calculator.setEnemyHP(health);
         updateCalculations();
         ActorAccess.updateActorField(1, "HP", health);
     }
@@ -56,7 +50,7 @@ public class EnemiesController {
         defense = CalculatorUtil.updateFromText(baseDefense, defense);
         if (defense == null) {return;}
 
-        cachedActor.setDefense(defense);
+        CalculatorUtil.calculator.setEnemyDefense(defense);
         updateCalculations();
         ActorAccess.updateActorField(1, "DEFENSE", defense);
     }
@@ -68,9 +62,7 @@ public class EnemiesController {
     }
 
     protected void updateCalculations() {
-        Actor calculated = itemSet.apply(cachedActor);
-
-        calcHealth.setText(String.valueOf(calculated.getHP()));
-        calcDefense.setText(String.valueOf(calculated.getDefense()));
+        calcHealth.setText(String.valueOf(CalculatorUtil.calculator.getEnemyTotalHP()));
+        calcDefense.setText(String.valueOf(CalculatorUtil.calculator.getEnemyTotalDefense()));
     }
 }
