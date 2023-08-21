@@ -7,8 +7,6 @@ import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-import java.util.function.Function;
-
 public class EnemiesController {
 
     // Note: currently there is only one enemy, so the ID field will always be 1
@@ -33,6 +31,8 @@ public class EnemiesController {
         updateCalculations();
     }
 
+    // ========== Update Stat Methods ==========
+
     @FXML
     protected void updateHealth() {
         Long health = null;
@@ -55,12 +55,14 @@ public class EnemiesController {
         ActorAccess.updateActorField(1, "DEFENSE", defense);
     }
 
+    /** Updates all values at once, used on a button. */
     @FXML
     protected void updateAll() {
         updateHealth();
         updateDefense();
     }
 
+    /** Updates the statistics of enemy actor calculated with item. */
     protected void updateCalculations() {
         calcHealth.setText(String.valueOf(CalculatorUtil.calculator.getEnemyTotalHP()));
         calcDefense.setText(String.valueOf(CalculatorUtil.calculator.getEnemyTotalDefense()));

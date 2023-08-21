@@ -42,10 +42,13 @@ public class ItemsController {
         }
         itemPicker.setItems(choices);
 
+        // switch ID on selecting one of the items.
         itemPicker.setOnAction(e -> switchID());
 
         refreshData();
     }
+
+    // ========== Update Stat Methods ==========
 
     @FXML
     protected void updateHealth() {
@@ -97,6 +100,19 @@ public class ItemsController {
         ItemAccess.updateItemField(ID, "BONUS_CRITICAL_HIT_CHANCE", critChance);
     }
 
+    /** Updates all values at once, used on a button. */
+    @FXML
+    protected void updateAll() {
+        updateHealth();
+        updateDefense();
+        updateAttack();
+        updateAttackSpeed();
+        updateCritChance();
+    }
+
+    // ========== Helper Methods ==========
+
+    /** Switch the ID of the currently selected item. */
     @FXML
     protected void switchID() {
         String text = itemPicker.getValue();
@@ -105,6 +121,7 @@ public class ItemsController {
         refreshData();
     }
 
+    /** Grabs the selected item and shows its values. */
     protected void refreshData() {
         Item item = ItemAccess.selectItem(ID);
 
@@ -115,14 +132,5 @@ public class ItemsController {
         itemAttack.setText(String.valueOf(item.getBonusAttack()));
         itemAttackSpeed.setText(String.valueOf(item.getBonusAttackSpeed()));
         itemCritChance.setText(String.valueOf(item.getBonusCriticalHitChance()));
-    }
-
-    @FXML
-    protected void updateAll() {
-        updateHealth();
-        updateDefense();
-        updateAttack();
-        updateAttackSpeed();
-        updateCritChance();
     }
 }

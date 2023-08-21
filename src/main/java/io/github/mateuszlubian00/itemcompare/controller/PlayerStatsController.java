@@ -43,6 +43,8 @@ public class PlayerStatsController {
         updateCalculations();
     }
 
+    // ========== Update Stat Methods ==========
+
     @FXML
     protected void updateAttack() {
         Long attack = null;
@@ -76,6 +78,7 @@ public class PlayerStatsController {
         ActorAccess.updateActorField(0, "CRITICAL_HIT_CHANCE", critChance);
     }
 
+    /** Updates all values at once, used on a button. */
     @FXML
     protected void updateAll() {
         updateAttack();
@@ -83,6 +86,7 @@ public class PlayerStatsController {
         updateCritChance();
     }
 
+    /** Updates the statistics of player actor calculated with items. */
     protected void updateCalculations() {
         calcAttack1.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalAttack(0)));
         calcAttackSpeed1.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalAttackSpeed(0)));
