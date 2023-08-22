@@ -59,7 +59,8 @@ public class ComparatorApplication extends Application {
         sub.getChildren().set(0, g);
     }
 
-    /** Helper method to create a database with some initial data values.
+    /** Helper method to create a database with some initial data values,
+     *  as well as initialize some CalculatorUtil variables.
      *  Normally not needed, but this app uses in-memory database.
      */
     private static void initializeData() {
@@ -101,6 +102,8 @@ public class ComparatorApplication extends Application {
                 ItemAccess.selectItem(1),
                 ItemAccess.selectItem(2)
         );
+        // Creation of formulas
+        CalculatorUtil.formulas = new Formulas();
     }
 
     public static void main(String[] args)  {
