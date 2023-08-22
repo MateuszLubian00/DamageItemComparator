@@ -3,7 +3,6 @@ package io.github.mateuszlubian00.itemcompare.model;
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
 
 import java.util.ArrayDeque;
-import java.util.Deque;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.BiFunction;
@@ -65,27 +64,28 @@ public class StatCalculator {
 
     // ========== Returning Total Stats ==========
 
-    public double getPlayerTotalAttack(int itemID) {
+    public long getPlayerTotalAttack(int itemID) {
         Item item = selectItem(itemID);
-        return parseFormula(CalculatorUtil.formulas.totalAttack, item);
+        // losing precision when casting to long, but that is ok
+        return (long) parseFormula(CalculatorUtil.formulas.totalAttack, player, enemy, item);
     }
 
     public double getPlayerTotalAttackSpeed(int itemID) {
         Item item = selectItem(itemID);
-        return player.getAttackSpeed() + item.getBonusAttackSpeed();
+        return parseFormula(CalculatorUtil.formulas.totalAttackSpeed, player, enemy, item);
     }
 
     public double getPlayerTotalCritChance(int itemID) {
         Item item = selectItem(itemID);
-        return player.getCriticalHitChance() + item.getBonusCriticalHitChance();
+        return parseFormula(CalculatorUtil.formulas.totalCritChance, player, enemy, item);
     }
 
     public long getEnemyTotalHP() {
-        return enemy.getHP() + item3.getBonusHP();
+        return (long) parseFormula(CalculatorUtil.formulas.totalHP, enemy, player, item3);
     }
 
     public long getEnemyTotalDefense() {
-        return enemy.getDefense() + item3.getBonusDefense();
+        return (long) parseFormula(CalculatorUtil.formulas.totalDefense, enemy, player, item3);
     }
 
     // ========== Handling Items ==========
@@ -181,7 +181,7 @@ public class StatCalculator {
     // ========== Formulas ==========
 
     /** Allows to map formula arguments to the correct variables. */
-    private Queue<Double> mapFormulaArgs(String[] args, Item item) {
+    private Queue<Double> mapFormulaArgs(String[] args, Actor unit, Actor enemy, Item item) {
         Queue<Double> result = new ArrayDeque<>();
         for (String elem : args) {
             // Manually translating all possible references
@@ -208,11 +208,11 @@ public class StatCalculator {
             } else {
                 switch (elem) {
                     // Player
-                    case "atk" -> result.offer((double) player.getAttack());
-                    case "atkspd" -> result.offer(player.getAttackSpeed());
-                    case "crit" -> result.offer(player.getCriticalHitChance());
-                    case "hp" -> result.offer((double) player.getHP());
-                    case "def" -> result.offer((double) player.getDefense());
+                    case "atk" -> result.offer((double) unit.getAttack());
+                    case "atkspd" -> result.offer(unit.getAttackSpeed());
+                    case "crit" -> result.offer(unit.getCriticalHitChance());
+                    case "hp" -> result.offer((double) unit.getHP());
+                    case "def" -> result.offer((double) unit.getDefense());
                     default -> {
                         // The inputted value might be a fixed value
                         try {
@@ -228,9 +228,9 @@ public class StatCalculator {
         return result;
     }
 
-    /** Takes in a formula and selected item to calculate the result. */
-    private double parseFormula(Formulas.formula f, Item item) {
-        Queue<Double> args = mapFormulaArgs(f.getRequirements(), item);
+    /** Takes in a formula and selected actors and item to calculate the result. */
+    private double parseFormula(Formulas.formula f, Actor unit, Actor enemy, Item item) {
+        Queue<Double> args = mapFormulaArgs(f.getRequirements(), unit, enemy, item);
         Queue<String> text = new ArrayDeque<>(List.of(f.getText().split("\\s+")));
         return parseRecFormula(text, args);
     }
