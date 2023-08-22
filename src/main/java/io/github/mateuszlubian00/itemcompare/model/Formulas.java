@@ -3,7 +3,7 @@ package io.github.mateuszlubian00.itemcompare.model;
 public class Formulas {
 
     /** Helper class to describe single formula. */
-    private class formula {
+    public class formula {
         String text;
         String[] requirements;
 
