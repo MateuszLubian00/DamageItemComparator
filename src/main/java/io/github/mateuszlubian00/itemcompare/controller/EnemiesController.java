@@ -20,6 +20,13 @@ public class EnemiesController {
     protected TextField calcHealth;
     @FXML
     protected TextField calcDefense;
+    @FXML
+    protected TextField formulaTotalHP;
+    @FXML
+    protected TextField formulaTotalDefense;
+    @FXML
+    protected TextField formulaDefenseEffect;
+
 
     @FXML
     private void initialize () {
@@ -27,6 +34,10 @@ public class EnemiesController {
 
         baseHealth.setText(String.valueOf(actor.getHP()));
         baseDefense.setText(String.valueOf(actor.getDefense()));
+
+        formulaTotalHP.setText("wip");
+        formulaTotalDefense.setText("wip");
+        formulaDefenseEffect.setText("wip");
 
         updateCalculations();
     }
@@ -66,5 +77,29 @@ public class EnemiesController {
     protected void updateCalculations() {
         calcHealth.setText(String.valueOf(CalculatorUtil.calculator.getEnemyTotalHP()));
         calcDefense.setText(String.valueOf(CalculatorUtil.calculator.getEnemyTotalDefense()));
+    }
+
+    // ========== Formulas ==========
+
+    @FXML
+    protected void updateFormulaHP() {
+
+    }
+
+    @FXML
+    protected void updateFormulaDefense() {
+
+    }
+
+    @FXML
+    protected void updateFormulaDefenseEffect() {
+
+    }
+
+    @FXML
+    protected void updateAllFormulas() {
+        updateFormulaHP();
+        updateFormulaDefense();
+        updateFormulaDefenseEffect();
     }
 }

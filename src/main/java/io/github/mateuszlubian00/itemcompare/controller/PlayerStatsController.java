@@ -30,6 +30,12 @@ public class PlayerStatsController {
     protected TextField baseAttackSpeed;
     @FXML
     protected TextField baseCritChance;
+    @FXML
+    protected TextField formulaTotalAttack;
+    @FXML
+    protected TextField formulaTotalAttackSpeed;
+    @FXML
+    protected TextField formulaTotalCritChance;
 
 
     @FXML
@@ -39,6 +45,10 @@ public class PlayerStatsController {
         baseAttack.setText(String.valueOf(actor.getAttack()));
         baseAttackSpeed.setText(String.valueOf(actor.getAttackSpeed()));
         baseCritChance.setText(String.valueOf(actor.getCriticalHitChance()));
+
+        formulaTotalAttack.setText("wip");
+        formulaTotalAttackSpeed.setText("wip");
+        formulaTotalCritChance.setText("wip");
 
         updateCalculations();
     }
@@ -95,5 +105,29 @@ public class PlayerStatsController {
         calcAttack2.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalAttack(1)));
         calcAttackSpeed2.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalAttackSpeed(1)));
         calcCritChance2.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalCritChance(1)));
+    }
+
+    // ========== Formulas ==========
+
+    @FXML
+    protected void updateFormulaAttack() {
+
+    }
+
+    @FXML
+    protected void updateFormulaAttackSpeed() {
+
+    }
+
+    @FXML
+    protected void updateFormulaCritChance() {
+
+    }
+
+    @FXML
+    protected void updateAllFormulas() {
+        updateFormulaAttack();
+        updateFormulaAttackSpeed();
+        updateFormulaCritChance();
     }
 }
