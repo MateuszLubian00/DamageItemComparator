@@ -46,9 +46,9 @@ public class PlayerStatsController {
         baseAttackSpeed.setText(String.valueOf(actor.getAttackSpeed()));
         baseCritChance.setText(String.valueOf(actor.getCriticalHitChance()));
 
-        formulaTotalAttack.setText("wip");
-        formulaTotalAttackSpeed.setText("wip");
-        formulaTotalCritChance.setText("wip");
+        formulaTotalAttack.setText(CalculatorUtil.formulas.totalAttack.toString());
+        formulaTotalAttackSpeed.setText(CalculatorUtil.formulas.totalAttackSpeed.toString());
+        formulaTotalCritChance.setText(CalculatorUtil.formulas.totalCritChance.toString());
 
         updateCalculations();
     }

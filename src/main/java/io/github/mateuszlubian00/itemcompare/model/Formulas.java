@@ -31,12 +31,18 @@ public class Formulas {
         public void setRequirements(String[] requirements) {
             this.requirements = requirements;
         }
+
+        @Override
+        public String toString() {
+            return String.format(text, (Object[]) requirements);
+        }
     }
     public formula totalAttack;
     public formula totalAttackSpeed;
     public formula totalCritChance;
     public formula totalCritDamage;
     public formula totalDefense;
+    public formula defenseEffect;
     public formula totalHP;
 
     public Formulas() {
@@ -45,6 +51,7 @@ public class Formulas {
         totalCritChance = new formula("%s + %s", new String[]{"crit", "i_crit"});
         totalCritDamage = new formula("%s", new String[]{"2.25"});
         totalDefense = new formula("%s + %s", new String[]{"def", "i_def"});
+        defenseEffect = new formula("%s / ( %s + %s )", new String[]{"100", "100", "t_def"});
         totalHP = new formula("%s + %s", new String[]{"hp", "i_hp"});
     }
 

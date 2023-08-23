@@ -35,9 +35,9 @@ public class EnemiesController {
         baseHealth.setText(String.valueOf(actor.getHP()));
         baseDefense.setText(String.valueOf(actor.getDefense()));
 
-        formulaTotalHP.setText("wip");
-        formulaTotalDefense.setText("wip");
-        formulaDefenseEffect.setText("wip");
+        formulaTotalHP.setText(CalculatorUtil.formulas.totalHP.toString());
+        formulaTotalDefense.setText(CalculatorUtil.formulas.totalDefense.toString());
+        formulaDefenseEffect.setText(CalculatorUtil.formulas.defenseEffect.toString());
 
         updateCalculations();
     }
