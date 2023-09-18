@@ -248,6 +248,7 @@ public class StatCalculator {
                 case "+" -> operation = Double::sum;
                 case "-" -> operation = (a, b) -> a-b;
                 case "*" -> operation = (a, b) -> a*b;
+                case "/" -> operation = (a, b) -> a/b;
                 // Parenthesis
                 case "(" -> value = operation.apply(value, parseRecFormula(formula, args));
                 case ")" -> { return value; }

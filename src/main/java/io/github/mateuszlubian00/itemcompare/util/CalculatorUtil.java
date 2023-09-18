@@ -3,6 +3,9 @@ package io.github.mateuszlubian00.itemcompare.util;
 import io.github.mateuszlubian00.itemcompare.model.*;
 import javafx.scene.control.TextInputControl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.function.Function;
 
 public class CalculatorUtil {
@@ -11,6 +14,10 @@ public class CalculatorUtil {
     public static StatCalculator calculator = null;
     /** Stored Formulas class to change and use any custom formulas */
     public static Formulas formulas = null;
+    /** Helper variable to quickly assess if a String is an allowed operation.
+     *  Used in setNewFormula method.
+     */
+    private static final HashSet<String> allowedOps = new HashSet<>(List.of(new String[]{"+", "-", "*", "/", "(", ")"}));
 
     /** Creates a function that applies item statistics to an Actor, returning a new Actor. */
     public static Function<Actor, Actor> calculateWithItem(Integer itemID){
@@ -60,5 +67,29 @@ public class CalculatorUtil {
             return null;
         }
         return target;
+    }
+
+    /** Method to parse user inputted formula and store it.
+     *  Returns true if the formula was proper.
+     */
+    public static boolean setNewFormula(String userFormula, Formulas.formula target) {
+        ArrayList<String> arguments = new ArrayList<>();
+        StringBuilder formula = new StringBuilder();
+        List<String> split = List.of(userFormula.toLowerCase().split("\\s+"));
+
+        for (String s : split) {
+            // Assume it's either an operation or a number/reference.
+            if (allowedOps.contains(s)) {
+                formula.append(s).append(" ");
+            } else {
+                formula.append("%s ");
+                arguments.add(s);
+            }
+        }
+
+        target.setText(formula.toString());
+        target.setRequirements(arguments.toArray(new String[0]));
+
+        return true;
     }
 }
