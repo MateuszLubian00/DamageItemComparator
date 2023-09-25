@@ -93,13 +93,11 @@ public class CalculatorUtil {
                 formula.append(s).append(" ");
                 if (s.equals(")")) {
                     expected--;
-                    // petty way to enforce closing an already open bracket
-                    if (brackets > 0) {
-                        brackets--;
-                    }
+                    brackets--;
                 } else {
                     expected++;
-                    if (s.equals("(")) {
+                    // petty way to refuse opening a closed bracket, ex. ") ("
+                    if (s.equals("(") && brackets >= 0) {
                         brackets++;
                     }
                 }
