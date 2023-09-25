@@ -1,6 +1,7 @@
 package io.github.mateuszlubian00.itemcompare.util;
 
 import io.github.mateuszlubian00.itemcompare.model.*;
+import javafx.scene.control.Control;
 import javafx.scene.control.TextInputControl;
 
 import java.util.ArrayList;
@@ -17,7 +18,10 @@ public class CalculatorUtil {
     /** Helper variable to quickly assess if a String is an allowed operation.
      *  Used in setNewFormula method.
      */
-    private static final HashSet<String> allowedOps = new HashSet<>(List.of(new String[]{"+", "-", "*", "/", "(", ")"}));
+    private static final HashSet<String> allowedOps = new HashSet<>(List.of("+", "-", "*", "/", "(", ")"));
+    /** Same as above, but for number references
+     */
+    private static final HashSet<String> allowedNums = new HashSet<>(List.of("atk", "atkspd", "crit", "hp", "def", "i_atk", "i_atkspd", "i_crit", "i_hp", "i_def", "e_atk", "e_atkspd", "e_crit", "e_hp", "e_def"));
 
     /** Creates a function that applies item statistics to an Actor, returning a new Actor. */
     public static Function<Actor, Actor> calculateWithItem(Integer itemID){
@@ -72,19 +76,59 @@ public class CalculatorUtil {
     /** Method to parse user inputted formula and store it.
      *  Returns true if the formula was proper.
      */
-    public static boolean setNewFormula(String userFormula, Formulas.formula target) {
+    public static boolean setNewFormula(TextInputControl input, Formulas.formula target) {
         ArrayList<String> arguments = new ArrayList<>();
         StringBuilder formula = new StringBuilder();
-        List<String> split = List.of(userFormula.toLowerCase().split("\\s+"));
+        List<String> split = List.of(input.getText().toLowerCase().split("\\s+"));
+        // number of expected numbers or references
+        int expected = 1;
+        // tracking brackets
+        int brackets = 0;
+
+        input.getStyleClass().remove("invalid");
 
         for (String s : split) {
-            // Assume it's either an operation or a number/reference.
             if (allowedOps.contains(s)) {
+                // It's an operation
                 formula.append(s).append(" ");
+                if (s.equals(")")) {
+                    expected--;
+                    // petty way to enforce closing an already open bracket
+                    if (brackets > 0) {
+                        brackets--;
+                    }
+                } else {
+                    expected++;
+                    if (s.equals("(")) {
+                        brackets++;
+                    }
+                }
             } else {
-                formula.append("%s ");
-                arguments.add(s);
+                boolean isNumber = true;
+
+                try {
+                    // It's either a number or error
+                    Double __ = Double.parseDouble(s);
+                }
+                catch (NumberFormatException e) {
+                    isNumber = false;
+                }
+
+                if (allowedNums.contains(s) || isNumber) {
+                    // It's a reference
+                    formula.append("%s ");
+                    arguments.add(s);
+                    expected--;
+                } else {
+                    input.getStyleClass().add("invalid");
+                    return false;
+                }
             }
+        }
+
+        if (expected != 0 || brackets != 0) {
+            input.getStyleClass().add("invalid");
+            return false;
         }
 
         target.setText(formula.toString());

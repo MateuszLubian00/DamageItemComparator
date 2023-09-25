@@ -111,19 +111,19 @@ public class PlayerStatsController {
 
     @FXML
     protected void updateFormulaAttack() {
-        CalculatorUtil.setNewFormula(formulaTotalAttack.getText(), CalculatorUtil.formulas.totalAttack);
+        CalculatorUtil.setNewFormula(formulaTotalAttack, CalculatorUtil.formulas.totalAttack);
         updateCalculations();
     }
 
     @FXML
     protected void updateFormulaAttackSpeed() {
-        CalculatorUtil.setNewFormula(formulaTotalAttackSpeed.getText(), CalculatorUtil.formulas.totalAttackSpeed);
+        CalculatorUtil.setNewFormula(formulaTotalAttackSpeed, CalculatorUtil.formulas.totalAttackSpeed);
         updateCalculations();
     }
 
     @FXML
     protected void updateFormulaCritChance() {
-        CalculatorUtil.setNewFormula(formulaTotalCritChance.getText(), CalculatorUtil.formulas.totalCritChance);
+        CalculatorUtil.setNewFormula(formulaTotalCritChance, CalculatorUtil.formulas.totalCritChance);
         updateCalculations();
     }
 

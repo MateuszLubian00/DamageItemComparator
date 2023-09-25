@@ -83,17 +83,22 @@ public class EnemiesController {
 
     @FXML
     protected void updateFormulaHP() {
-
+        CalculatorUtil.setNewFormula(formulaTotalHP, CalculatorUtil.formulas.totalHP);
+        updateCalculations();
     }
 
     @FXML
     protected void updateFormulaDefense() {
-
+        CalculatorUtil.setNewFormula(formulaTotalDefense, CalculatorUtil.formulas.totalDefense);
+        updateCalculations();
     }
 
     @FXML
     protected void updateFormulaDefenseEffect() {
-
+        /* Not yet implemented
+        CalculatorUtil.setNewFormula(formulaDefenseEffect, CalculatorUtil.formulas.defenseEffect);
+        updateCalculations();
+        */
     }
 
     @FXML
