@@ -1,5 +1,6 @@
 package io.github.mateuszlubian00.itemcompare.controller;
 
+import io.github.mateuszlubian00.itemcompare.ComparatorApplication;
 import io.github.mateuszlubian00.itemcompare.model.Actor;
 import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
@@ -51,6 +52,11 @@ public class PlayerStatsController {
         formulaTotalCritChance.setText(CalculatorUtil.formulas.totalCritChance.toString());
 
         updateCalculations();
+    }
+
+    @FXML
+    private void getHelp() {
+        ComparatorApplication.openHelp();
     }
 
     // ========== Update Stat Methods ==========

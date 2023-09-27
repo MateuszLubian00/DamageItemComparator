@@ -7,6 +7,7 @@ import io.github.mateuszlubian00.itemcompare.util.DBUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +17,8 @@ import java.io.IOException;
 
 public class ComparatorApplication extends Application {
 
+    /** Stage used in formula help window. */
+    public static Stage helpStage = null;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -104,6 +107,34 @@ public class ComparatorApplication extends Application {
         );
         // Creation of formulas
         CalculatorUtil.formulas = new Formulas();
+    }
+
+    /** Opens up a new window that explains how formulas should be formed. Only one window is allowed. */
+    public static void openHelp() {
+        if (helpStage != null) {
+            // setIconified == setMinimized
+            // great naming convention
+            helpStage.setIconified(false);
+            helpStage.toFront();
+        } else {
+            try {
+                FXMLLoader xFxmlLoader = new FXMLLoader(ComparatorApplication.class.getResource("help.fxml"));
+                Parent root = xFxmlLoader.load();
+                Stage stage = new Stage();
+                stage.setTitle("Formulas Help");
+                stage.setScene(new Scene(root));
+                helpStage = stage;
+                stage.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /** Closes the formula help window. */
+    public static void closeHelp() {
+        helpStage.close();
+        helpStage = null;
     }
 
     public static void main(String[] args)  {

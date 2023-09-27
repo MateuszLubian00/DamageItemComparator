@@ -1,5 +1,6 @@
 package io.github.mateuszlubian00.itemcompare.controller;
 
+import io.github.mateuszlubian00.itemcompare.ComparatorApplication;
 import io.github.mateuszlubian00.itemcompare.model.Actor;
 import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
@@ -40,6 +41,11 @@ public class EnemiesController {
         formulaDefenseEffect.setText(CalculatorUtil.formulas.defenseEffect.toString());
 
         updateCalculations();
+    }
+
+    @FXML
+    private void getHelp() {
+        ComparatorApplication.openHelp();
     }
 
     // ========== Update Stat Methods ==========
