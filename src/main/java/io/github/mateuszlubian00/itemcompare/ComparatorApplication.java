@@ -123,6 +123,11 @@ public class ComparatorApplication extends Application {
                 Stage stage = new Stage();
                 stage.setTitle("Formulas Help");
                 stage.setScene(new Scene(root));
+                // same minimum size as the main window
+                stage.setMinWidth(641);
+                stage.setMinHeight(464);
+                // bugfix for closing window with red X or alt + F4
+                stage.setOnCloseRequest(e -> {closeHelp();});
                 helpStage = stage;
                 stage.show();
             } catch (IOException e) {
