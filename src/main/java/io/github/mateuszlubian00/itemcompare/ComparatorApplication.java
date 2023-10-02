@@ -112,6 +112,8 @@ public class ComparatorApplication extends Application {
     /** Opens up a new window that explains how formulas should be formed. Only one window is allowed. */
     public static void openHelp() {
         if (helpStage != null) {
+            // Stage was already made, show it
+            helpStage.show();
             // setIconified == setMinimized
             // great naming convention
             helpStage.setIconified(false);
@@ -120,14 +122,14 @@ public class ComparatorApplication extends Application {
             try {
                 FXMLLoader xFxmlLoader = new FXMLLoader(ComparatorApplication.class.getResource("help.fxml"));
                 Parent root = xFxmlLoader.load();
+
                 Stage stage = new Stage();
                 stage.setTitle("Formulas Help");
                 stage.setScene(new Scene(root));
                 // same minimum size as the main window
                 stage.setMinWidth(641);
                 stage.setMinHeight(464);
-                // bugfix for closing window with red X or alt + F4
-                stage.setOnCloseRequest(e -> {closeHelp();});
+
                 helpStage = stage;
                 stage.show();
             } catch (IOException e) {
@@ -138,8 +140,8 @@ public class ComparatorApplication extends Application {
 
     /** Closes the formula help window. */
     public static void closeHelp() {
+        // Hides the stage, doesn't actually close it
         helpStage.close();
-        helpStage = null;
     }
 
     public static void main(String[] args)  {

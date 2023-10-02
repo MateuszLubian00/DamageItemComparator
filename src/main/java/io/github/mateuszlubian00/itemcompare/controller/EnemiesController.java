@@ -33,19 +33,16 @@ public class EnemiesController {
     private void initialize () {
         Actor actor = ActorAccess.selectActor(1);
 
+        // Base statistics of enemy
         baseHealth.setText(String.valueOf(actor.getHP()));
         baseDefense.setText(String.valueOf(actor.getDefense()));
 
+        // Formulas of how statistics are applied
         formulaTotalHP.setText(CalculatorUtil.formulas.totalHP.toString());
         formulaTotalDefense.setText(CalculatorUtil.formulas.totalDefense.toString());
         formulaDefenseEffect.setText(CalculatorUtil.formulas.defenseEffect.toString());
 
         updateCalculations();
-    }
-
-    @FXML
-    private void getHelp() {
-        ComparatorApplication.openHelp();
     }
 
     // ========== Update Stat Methods ==========
@@ -86,6 +83,12 @@ public class EnemiesController {
     }
 
     // ========== Formulas ==========
+
+    /** Opens up a help window for creating formulas. */
+    @FXML
+    private void getHelp() {
+        ComparatorApplication.openHelp();
+    }
 
     @FXML
     protected void updateFormulaHP() {

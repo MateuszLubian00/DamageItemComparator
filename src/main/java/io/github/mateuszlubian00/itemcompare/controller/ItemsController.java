@@ -8,8 +8,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
 public class ItemsController {
 
@@ -26,23 +26,24 @@ public class ItemsController {
     @FXML
     protected ChoiceBox<String> itemPicker;
     @FXML
-    protected Text selectedItem;
+    protected Label selectedItem;
     protected Integer ID = 0;
 
     @FXML
     protected void initialize() {
         ObservableList<Item> itemList = ItemAccess.selectManyItems();
 
+        // Set currently selected item name in selection box
         itemPicker.setValue("Item " + (ID + 1));
-        selectedItem.setText("Item " + (ID + 1));
 
+        // Fill selection box with names of all the items
         ObservableList<String> choices = FXCollections.observableArrayList();
         for (int i = 1; i <= itemList.size(); i++) {
             choices.add("Item " + i);
         }
         itemPicker.setItems(choices);
 
-        // switch ID on selecting one of the items.
+        // replace current item with the one selected by user
         itemPicker.setOnAction(e -> switchID());
 
         refreshData();
@@ -112,21 +113,25 @@ public class ItemsController {
 
     // ========== Helper Methods ==========
 
-    /** Switch the ID of the currently selected item. */
+    /** Takes user selected item from ChoiceBox, updates ID and switches visible values. */
     @FXML
     protected void switchID() {
         String text = itemPicker.getValue();
+        // Strip the word 'Item ' from current selection
         ID = Integer.parseInt(text.substring(5)) - 1;
 
         refreshData();
     }
 
-    /** Grabs the selected item and shows its values. */
+    /** Grabs the selected item from database and shows its values to user. */
     protected void refreshData() {
+        // We don't keep or access all items, grab new one each time user asks
         Item item = ItemAccess.selectItem(ID);
 
+        // Set name of the selected item
         selectedItem.setText("Item " + (ID + 1));
 
+        // Output statistics
         itemHealth.setText(String.valueOf(item.getBonusHP()));
         itemDefense.setText(String.valueOf(item.getBonusDefense()));
         itemAttack.setText(String.valueOf(item.getBonusAttack()));

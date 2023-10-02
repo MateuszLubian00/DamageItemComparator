@@ -43,20 +43,17 @@ public class PlayerStatsController {
     private void initialize () {
         Actor actor = ActorAccess.selectActor(0);
 
+        // Base statistics of player
         baseAttack.setText(String.valueOf(actor.getAttack()));
         baseAttackSpeed.setText(String.valueOf(actor.getAttackSpeed()));
         baseCritChance.setText(String.valueOf(actor.getCriticalHitChance()));
 
+        // Formulas of how statistics are applied
         formulaTotalAttack.setText(CalculatorUtil.formulas.totalAttack.toString());
         formulaTotalAttackSpeed.setText(CalculatorUtil.formulas.totalAttackSpeed.toString());
         formulaTotalCritChance.setText(CalculatorUtil.formulas.totalCritChance.toString());
 
         updateCalculations();
-    }
-
-    @FXML
-    private void getHelp() {
-        ComparatorApplication.openHelp();
     }
 
     // ========== Update Stat Methods ==========
@@ -114,6 +111,12 @@ public class PlayerStatsController {
     }
 
     // ========== Formulas ==========
+
+    /** Opens up a help window for creating formulas. */
+    @FXML
+    private void getHelp() {
+        ComparatorApplication.openHelp();
+    }
 
     @FXML
     protected void updateFormulaAttack() {
