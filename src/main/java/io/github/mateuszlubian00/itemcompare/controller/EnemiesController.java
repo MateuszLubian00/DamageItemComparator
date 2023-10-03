@@ -26,7 +26,7 @@ public class EnemiesController {
     @FXML
     protected TextField formulaTotalDefense;
     @FXML
-    protected TextField formulaDefenseEffect;
+    protected TextField formulaDefenseMultiplier;
 
 
     @FXML
@@ -40,7 +40,7 @@ public class EnemiesController {
         // Formulas of how statistics are applied
         formulaTotalHP.setText(CalculatorUtil.formulas.totalHP.toString());
         formulaTotalDefense.setText(CalculatorUtil.formulas.totalDefense.toString());
-        formulaDefenseEffect.setText(CalculatorUtil.formulas.defenseEffect.toString());
+        formulaDefenseMultiplier.setText(CalculatorUtil.formulas.defenseMultiplier.toString());
 
         updateCalculations();
     }
@@ -78,8 +78,9 @@ public class EnemiesController {
 
     /** Updates the statistics of enemy actor calculated with item. */
     protected void updateCalculations() {
-        calcHealth.setText(String.valueOf(CalculatorUtil.calculator.getEnemyTotalHP()));
-        calcDefense.setText(String.valueOf(CalculatorUtil.calculator.getEnemyTotalDefense()));
+        // Currently enemy unit has item 3, with ID 2
+        calcHealth.setText(String.valueOf(CalculatorUtil.calculator.getTotalHP(false, 2)));
+        calcDefense.setText(String.valueOf(CalculatorUtil.calculator.getTotalDefense(false, 2)));
     }
 
     // ========== Formulas ==========
@@ -105,18 +106,16 @@ public class EnemiesController {
     }
 
     @FXML
-    protected void updateFormulaDefenseEffect() {
-        /* Not yet implemented
-        if (CalculatorUtil.setNewFormula(formulaDefenseEffect, CalculatorUtil.formulas.defenseEffect)) {
+    protected void updateFormulaDefenseMultiplier() {
+        if (CalculatorUtil.setNewFormula(formulaDefenseMultiplier, CalculatorUtil.formulas.defenseMultiplier)) {
             updateCalculations();
         }
-        */
     }
 
     @FXML
     protected void updateAllFormulas() {
         updateFormulaHP();
         updateFormulaDefense();
-        updateFormulaDefenseEffect();
+        updateFormulaDefenseMultiplier();
     }
 }

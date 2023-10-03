@@ -101,13 +101,13 @@ public class PlayerStatsController {
 
     /** Updates the statistics of player actor calculated with items. */
     protected void updateCalculations() {
-        calcAttack1.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalAttack(0)));
-        calcAttackSpeed1.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalAttackSpeed(0)));
-        calcCritChance1.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalCritChance(0)));
+        calcAttack1.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttack(true, 0)));
+        calcAttackSpeed1.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttackSpeed(true, 0)));
+        calcCritChance1.setText(String.valueOf(CalculatorUtil.calculator.getTotalCritChance(true, 0)));
 
-        calcAttack2.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalAttack(1)));
-        calcAttackSpeed2.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalAttackSpeed(1)));
-        calcCritChance2.setText(String.valueOf(CalculatorUtil.calculator.getPlayerTotalCritChance(1)));
+        calcAttack2.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttack(true, 1)));
+        calcAttackSpeed2.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttackSpeed(true, 1)));
+        calcCritChance2.setText(String.valueOf(CalculatorUtil.calculator.getTotalCritChance(true, 1)));
     }
 
     // ========== Formulas ==========

@@ -44,7 +44,7 @@
                                     <Label text="defense value; negatively affects the damage taken" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     <Label text="i_ modifier selects the statistic of an item" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                     <Label text="e_ modifier selects the base statistic of a character that is not self; in other words, an enemy" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <Label text="t_ modifier selects the total statistic of a character (currently not implemented)" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                                    <Label text="t_ modifier selects the total statistic of a character" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                                     <Label text="reference without a modifier refers to base statistic of a character" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                     <Label text="atkspd" GridPane.rowIndex="2" />
                                     <Label text="crit" GridPane.rowIndex="3" />

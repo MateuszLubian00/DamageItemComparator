@@ -64,28 +64,40 @@ public class StatCalculator {
 
     // ========== Returning Total Stats ==========
 
-    public long getPlayerTotalAttack(int itemID) {
+    /** Helper method to return any formula with regard to item and unit. */
+    private double getTotalStat(boolean isPlayer, int itemID, Formulas.formula f) {
         Item item = selectItem(itemID);
-        // losing precision when casting to long, but that is ok
-        return (long) parseFormula(CalculatorUtil.formulas.totalAttack, player, enemy, item);
+        // only thing that changes is the unit argument positions
+        if (isPlayer) {
+            return parseFormula(f, player, enemy, item);
+        } else {
+            return parseFormula(f, enemy, player, item);
+        }
     }
 
-    public double getPlayerTotalAttackSpeed(int itemID) {
-        Item item = selectItem(itemID);
-        return parseFormula(CalculatorUtil.formulas.totalAttackSpeed, player, enemy, item);
+    public long getTotalAttack(boolean isPlayer, int itemID) {
+        // losing precision when casting to long
+        return (long) getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalAttack);
     }
 
-    public double getPlayerTotalCritChance(int itemID) {
-        Item item = selectItem(itemID);
-        return parseFormula(CalculatorUtil.formulas.totalCritChance, player, enemy, item);
+    public double getTotalAttackSpeed(boolean isPlayer, int itemID) {
+        return getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalAttackSpeed);
     }
 
-    public long getEnemyTotalHP() {
-        return (long) parseFormula(CalculatorUtil.formulas.totalHP, enemy, player, item3);
+    public double getTotalCritChance(boolean isPlayer, int itemID) {
+        return getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalCritChance);
     }
 
-    public long getEnemyTotalDefense() {
-        return (long) parseFormula(CalculatorUtil.formulas.totalDefense, enemy, player, item3);
+    public long getTotalHP(boolean isPlayer, int itemID) {
+        return (long) getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalHP);
+    }
+
+    public long getTotalDefense(boolean isPlayer, int itemID) {
+        return (long) getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalDefense);
+    }
+
+    public double getDefenseMultiplier(boolean isPlayer, int itemID) {
+        return getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.defenseMultiplier);
     }
 
     // ========== Handling Items ==========
@@ -203,6 +215,16 @@ public class StatCalculator {
                     case "e_crit" -> result.offer(enemy.getCriticalHitChance());
                     case "e_hp" -> result.offer((double) enemy.getHP());
                     case "e_def" -> result.offer((double) enemy.getDefense());
+                    default -> result.offer(0d);
+                }
+            } else if (elem.startsWith("t_")) {
+                switch (elem) {
+                    // Total Player
+                    case "t_atk" -> result.offer(parseFormula(CalculatorUtil.formulas.totalAttack, unit, enemy, item));
+                    case "t_atkspd" -> result.offer(parseFormula(CalculatorUtil.formulas.totalAttackSpeed, unit, enemy, item));
+                    case "t_crit" -> result.offer(parseFormula(CalculatorUtil.formulas.totalCritChance, unit, enemy, item));
+                    case "t_hp" -> result.offer(parseFormula(CalculatorUtil.formulas.totalHP, unit, enemy, item));
+                    case "t_def" -> result.offer(parseFormula(CalculatorUtil.formulas.totalDefense, unit, enemy, item));
                     default -> result.offer(0d);
                 }
             } else {

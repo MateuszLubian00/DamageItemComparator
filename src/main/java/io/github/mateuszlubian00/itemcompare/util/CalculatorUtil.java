@@ -21,7 +21,7 @@ public class CalculatorUtil {
     private static final HashSet<String> allowedOps = new HashSet<>(List.of("+", "-", "*", "/", "(", ")"));
     /** Same as above, but for number references
      */
-    private static final HashSet<String> allowedNums = new HashSet<>(List.of("atk", "atkspd", "crit", "hp", "def", "i_atk", "i_atkspd", "i_crit", "i_hp", "i_def", "e_atk", "e_atkspd", "e_crit", "e_hp", "e_def"));
+    private static final HashSet<String> allowedNums = new HashSet<>(List.of("atk", "atkspd", "crit", "hp", "def", "i_atk", "i_atkspd", "i_crit", "i_hp", "i_def", "e_atk", "e_atkspd", "e_crit", "e_hp", "e_def", "t_atk", "t_atkspd", "t_crit", "t_hp", "t_def"));
 
     /** Creates a function that applies item statistics to an Actor, returning a new Actor. */
     public static Function<Actor, Actor> calculateWithItem(Integer itemID){
