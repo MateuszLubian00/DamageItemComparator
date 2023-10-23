@@ -105,35 +105,41 @@ public class GraphsController {
         setChartSeconds(seconds, increment, chartCustomSeconds);
     }
 
+    // ========== Chart modifying ==========
+
     /** Special case to show only 1 attack */
-    protected  void setChart1Attack(BarChart<String, Number> chart) {
+    protected void setChart1Attack(BarChart<String, Number> chart) {
         XYChart.Series<String,Number> set1 = new XYChart.Series<>();
         XYChart.Series<String,Number> set2 = new XYChart.Series<>();
 
         set1.setName("With Item 1");
         set2.setName("With Item 2");
 
-        set1.getData().add(new XYChart.Data<>("Normal Attack", (playerSet1.getAttack() - enemySet.getDefense())));
-        set1.getData().add(new XYChart.Data<>("Critical Attack", ((playerSet1.getAttack() * 2) - enemySet.getDefense())));
-
-        set2.getData().add(new XYChart.Data<>("Normal Attack", (playerSet2.getAttack() - enemySet.getDefense())));
-        set2.getData().add(new XYChart.Data<>("Critical Attack", ((playerSet2.getAttack() * 2) - enemySet.getDefense())));
-
-        if (playerSet1.getCriticalHitChance() >= 100D) {
-            set1.getData().remove(0);
-        } else if (playerSet1.getCriticalHitChance() <= 0D) {
-            set1.getData().remove(1);
-        }
-
-        if (playerSet2.getCriticalHitChance() >= 100D) {
-            set2.getData().remove(0);
-        } else if (playerSet2.getCriticalHitChance() <= 0D) {
-            set2.getData().remove(1);
-        }
+        oneAttackHelper(0, set1);
+        oneAttackHelper(1, set2);
 
         chart.getData().addAll(set1, set2);
     }
 
+    /** Helper method to get both normal and critical attack of an attack */
+    private void oneAttackHelper(int itemID, XYChart.Series<String,Number> set) {
+        double[] attacks = CalculatorUtil.calculator.nextAttacks(itemID, 1);
+        double critChance = CalculatorUtil.calculator.getTotalCritChance(true, itemID);
+        if (critChance < 100D) {
+            set.getData().add(new XYChart.Data<>("Normal Attack", (attacks[0])));
+        }
+        if (critChance > 0D) {
+            // hacky way to force a critical hit
+            double baseCrit = CalculatorUtil.calculator.getPlayerCritChance();
+            CalculatorUtil.calculator.setPlayerCritChance(100D);
+            attacks = CalculatorUtil.calculator.nextAttacks(itemID, 1);
+            CalculatorUtil.calculator.setPlayerCritChance(baseCrit);
+
+            set.getData().add(new XYChart.Data<>("Critical Attack", (attacks[0])));
+        }
+    }
+
+    /** Set chart for N amount of attacks */
     protected void setChartAttacks(int attacks, AreaChart<String, Number> chart) {
         chart.setData(FXCollections.observableArrayList());
 
@@ -141,86 +147,78 @@ public class GraphsController {
         XYChart.Series<String,Number> set2 = new XYChart.Series<>();
         set1.setName("With Item 1");
         set2.setName("With Item 2");
-        Double crit1 = playerSet1.getCriticalHitChance();
-        Double crit2 = playerSet2.getCriticalHitChance();
 
-        long attack1 = playerSet1.getAttack();
-        long attack2 = playerSet2.getAttack();
+        double[] damage1 = CalculatorUtil.calculator.nextAttacks(0, attacks);
+        double[] damage2 = CalculatorUtil.calculator.nextAttacks(1, attacks);
 
-        long defense = enemySet.getDefense();
-
-        long total1 = 0L;
-        long total2 = 0L;
+        long total1 = 0;
+        long total2 = 0;
 
         for (int i = 1; i - 1 < attacks; i++) {
-            if (crit1 >= 100D) {
-                total1 += ((2* attack1) - defense);
-                crit1 -= 100D;
-            } else {
-                total1 += (attack1 - defense);
-            }
+            total1 += damage1[i - 1];
             set1.getData().add(new XYChart.Data<>(String.valueOf(i), total1));
-
-            if (crit2 >= 100D) {
-                total2 += ((2 * attack2) - defense);
-                crit2 -= 100D;
-            } else {
-                total2 += (attack2 - defense);
-            }
+            total2 += damage2[i - 1];
             set2.getData().add(new XYChart.Data<>(String.valueOf(i), total2));
-
-            crit1 += playerSet1.getCriticalHitChance();
-            crit2 += playerSet2.getCriticalHitChance();
         }
 
         chart.getData().addAll(set1, set2);
     }
 
-    protected void setChartSeconds(Double seconds,Double timeIncrement, AreaChart<String, Number> chart) {
+    /** Set chart for N amount of seconds of attacks */
+    protected void setChartSeconds(double seconds, double timeIncrement, AreaChart<String, Number> chart) {
         chart.setData(FXCollections.observableArrayList());
 
         XYChart.Series<String,Number> set1 = new XYChart.Series<>();
         XYChart.Series<String,Number> set2 = new XYChart.Series<>();
+
         set1.setName("With Item 1");
         set2.setName("With Item 2");
-        Double crit1 = playerSet1.getCriticalHitChance();
-        Double crit2 = playerSet2.getCriticalHitChance();
 
-        long attack1 = playerSet1.getAttack();
-        long attack2 = playerSet2.getAttack();
+        double attackTime1 = CalculatorUtil.calculator.getTotalAttackSpeed(true, 0);
+        double attackTime2 = CalculatorUtil.calculator.getTotalAttackSpeed(true, 1);
 
-        long defense = enemySet.getDefense();
+        double totalAttacks = seconds * attackTime1;
+        double[] attacks1 = CalculatorUtil.calculator.nextAttacks(0, (int) totalAttacks);
+        totalAttacks = seconds * attackTime2;
+        double[] attacks2 = CalculatorUtil.calculator.nextAttacks(1, (int) totalAttacks);
 
-        long total1 = 0L;
-        long total2 = 0L;
+        // total damage dealt
+        long total1 = 0, total2 = 0;
 
-        double attackTime1 = 1D / playerSet1.getAttackSpeed();
-        double attackTime2 = 1D / playerSet2.getAttackSpeed();
+        // seconds per attack
+        attackTime1 = 1D / attackTime1;
+        attackTime2 = 1D / attackTime2;
 
-        double totalTime1 = 0D;
-        double totalTime2 = 0D;
+        // pointers for damage arrays
+        int pointer1 = 0,
+            pointer2 = 0;
+        // total time spent on auto attacking
+        double totalTime1 = 0D,
+               totalTime2 = 0D;
 
+        // TODO: optimize maybe
         for (double i = timeIncrement; i <= seconds; i += timeIncrement) {
-            while (totalTime1 + attackTime1 < i) {
-                if (crit1 >= 100D) {
-                    total1 += ((2* attack1) - defense);
-                    crit1 -= 100D;
-                } else {
-                    total1 += (attack1 - defense);
-                }
+            int attack = 0;
+            while (totalTime1 + attackTime1 <= i) {
+                attack++;
                 totalTime1 += attackTime1;
             }
-            set1.getData().add(new XYChart.Data<>(String.valueOf(i), total1));
+            for (; attack > 0 && pointer1 < attacks1.length; attack--) {
+                total1 += attacks1[pointer1];
+                pointer1++;
+            }
 
-            while (totalTime2 + attackTime2 < i) {
-                if (crit2 >= 100D) {
-                    total2 += ((2* attack2) - defense);
-                    crit2 -= 100D;
-                } else {
-                    total2 += (attack2 - defense);
-                }
+            attack = 0;
+            while (totalTime2 + attackTime2 <= i) {
+                attack++;
                 totalTime2 += attackTime2;
             }
+            for (; attack > 0 && pointer2 < attacks2.length; attack--) {
+                total2 += attacks2[pointer2];
+                pointer2++;
+            }
+
+            set1.getData().add(new XYChart.Data<>(String.valueOf(i), total1));
             set2.getData().add(new XYChart.Data<>(String.valueOf(i), total2));
         }
 

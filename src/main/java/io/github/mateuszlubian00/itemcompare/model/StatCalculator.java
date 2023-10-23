@@ -14,52 +14,42 @@ public class StatCalculator {
     private Item item1;
     private Item item2;
     private Item item3;
-    private Actor originalPlayer;
-    private Actor originalEnemy;
-    private Item originalItem1;
-    private Item originalItem2;
-    private Item originalItem3;
 
 
     public StatCalculator(Actor player, Actor enemy, Item item1, Item item2, Item item3) {
         this.player = player;
-        this.originalPlayer = player;
         this.enemy = enemy;
-        this.originalEnemy = enemy;
         this.item1 = item1;
-        this.originalItem1 = item1;
         this.item2 = item2;
-        this.originalItem2 = item2;
         this.item3 = item3;
-        this.originalItem3 = item3;
     }
 
-    public Double nextAttack() {
-        return 0D;
-    }
+    /** Calculates the damage of N amount of attacks */
+    public double[] nextAttacks(int itemID, int attackAmount) {
+        if (attackAmount < 1) {
+            return new double[]{0};
+        }
 
-    public Double nextAttackTime() {
-        return 0D;
-    }
+        long attack = getTotalAttack(true, itemID);
+        double defenseModifier = getDefenseMultiplier(false, 2);
+        double baseCriticalChance = getTotalCritChance(true, itemID);
+        double calculatedCriticalChance = baseCriticalChance;
 
-    public Double nextCritChance() {
-        return 0D;
-    }
+        double[] damage = new double[attackAmount];
+        int currAttack = 0;
 
-    public Double nextCritDamage() {
-        return 0D;
-    }
+        while (currAttack < attackAmount) {
+            if (calculatedCriticalChance >= 100D) {
+                damage[currAttack] = (attack * 2) * defenseModifier;
+                calculatedCriticalChance -= 100D;
+            } else {
+                damage[currAttack] = attack * defenseModifier;
+            }
+            calculatedCriticalChance += baseCriticalChance;
+            currAttack++;
+        }
 
-    public Double nextDefense() {
-        return 0D;
-    }
-
-    public void reset() {
-        player = originalPlayer;
-        enemy = originalEnemy;
-        item1 = originalItem1;
-        item2 = originalItem2;
-        item3 = originalItem3;
+        return damage;
     }
 
     // ========== Returning Total Stats ==========
@@ -107,7 +97,7 @@ public class StatCalculator {
             case 1 -> {return item2;}
             case 2 -> {return item3;}
         }
-        System.out.println("Couldn't not find the specified item, exiting.");
+        System.out.printf("Couldn't find the specified item ID: %s, exiting.\n", ID);
         System.exit(0);
         return null;
     }
