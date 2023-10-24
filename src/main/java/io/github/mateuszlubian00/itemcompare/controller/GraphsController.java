@@ -12,6 +12,8 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 
+import java.math.BigDecimal;
+
 public class GraphsController {
 
     @FXML
@@ -177,9 +179,13 @@ public class GraphsController {
         double attackTime1 = CalculatorUtil.calculator.getTotalAttackSpeed(true, 0);
         double attackTime2 = CalculatorUtil.calculator.getTotalAttackSpeed(true, 1);
 
-        double totalAttacks = seconds * attackTime1;
+        /* Adding 1 to total attacks is a hack to combat imprecision.
+        *  Example: adding 0.7 and 0.1 results in 0.799999 attack speed.
+        *  This would result in one less attack, even though the code would try to add it in (Error!).
+        */
+        double totalAttacks = seconds * attackTime1 + 1;
         double[] attacks1 = CalculatorUtil.calculator.nextAttacks(0, (int) totalAttacks);
-        totalAttacks = seconds * attackTime2;
+        totalAttacks = seconds * attackTime2 + 1;
         double[] attacks2 = CalculatorUtil.calculator.nextAttacks(1, (int) totalAttacks);
 
         // total damage dealt
@@ -203,7 +209,7 @@ public class GraphsController {
                 attack++;
                 totalTime1 += attackTime1;
             }
-            for (; attack > 0 && pointer1 < attacks1.length; attack--) {
+            for (; attack > 0; attack--) {
                 total1 += attacks1[pointer1];
                 pointer1++;
             }
@@ -213,13 +219,15 @@ public class GraphsController {
                 attack++;
                 totalTime2 += attackTime2;
             }
-            for (; attack > 0 && pointer2 < attacks2.length; attack--) {
+            for (; attack > 0; attack--) {
                 total2 += attacks2[pointer2];
                 pointer2++;
             }
 
-            set1.getData().add(new XYChart.Data<>(String.valueOf(i), total1));
-            set2.getData().add(new XYChart.Data<>(String.valueOf(i), total2));
+            // Casting to float feels weird, but looks better due to cutting off imprecision.
+            String time = String.valueOf((float) i);
+            set1.getData().add(new XYChart.Data<>(time, total1));
+            set2.getData().add(new XYChart.Data<>(time, total2));
         }
 
         // Due to settings and attack speeds, there is nothing to show
