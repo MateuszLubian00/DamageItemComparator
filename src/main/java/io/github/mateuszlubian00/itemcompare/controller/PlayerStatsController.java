@@ -1,13 +1,12 @@
 package io.github.mateuszlubian00.itemcompare.controller;
 
+import io.github.mateuszlubian00.itemcompare.ComparatorApplication;
 import io.github.mateuszlubian00.itemcompare.model.Actor;
 import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
-
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-
-import java.util.function.Function;
 
 public class PlayerStatsController {
 
@@ -32,75 +31,67 @@ public class PlayerStatsController {
     protected TextField baseAttackSpeed;
     @FXML
     protected TextField baseCritChance;
-    protected Function<Actor, Actor> itemSet1;
-    protected Function<Actor, Actor> itemSet2;
-    protected Actor cachedActor;
+    @FXML
+    protected TextField formulaTotalAttack;
+    @FXML
+    protected TextField formulaTotalAttackSpeed;
+    @FXML
+    protected TextField formulaTotalCritChance;
 
 
     @FXML
     private void initialize () {
         Actor actor = ActorAccess.selectActor(0);
 
-        cachedActor = actor;
-
+        // Base statistics of player
         baseAttack.setText(String.valueOf(actor.getAttack()));
         baseAttackSpeed.setText(String.valueOf(actor.getAttackSpeed()));
         baseCritChance.setText(String.valueOf(actor.getCriticalHitChance()));
 
-        itemSet1 = CalculatorUtil.calculateWithItem(0);
-        itemSet2 = CalculatorUtil.calculateWithItem(1);
+        // Formulas of how statistics are applied
+        formulaTotalAttack.setText(CalculatorUtil.formulas.totalAttack.toString());
+        formulaTotalAttackSpeed.setText(CalculatorUtil.formulas.totalAttackSpeed.toString());
+        formulaTotalCritChance.setText(CalculatorUtil.formulas.totalCritChance.toString());
 
         updateCalculations();
     }
 
+    // ========== Update Stat Methods ==========
+
     @FXML
     protected void updateAttack() {
-        baseAttack.getStyleClass().remove("invalid");
-        Long attack;
-        try {
-            attack = Long.parseLong(baseAttack.getText());
-        } catch (NumberFormatException e) {
-            baseAttack.getStyleClass().add("invalid");
-            return;
-        }
+        Long attack = null;
+        attack = CalculatorUtil.updateFromText(baseAttack, attack);
+        if (attack == null) {return;}
 
-        cachedActor.setAttack(attack);
+        CalculatorUtil.calculator.setPlayerAttack(attack);
         updateCalculations();
         ActorAccess.updateActorField(0, "ATTACK", attack);
     }
 
     @FXML
     protected void updateAttackSpeed() {
-        baseAttackSpeed.getStyleClass().remove("invalid");
-        Double attackSpeed;
-        try {
-            attackSpeed = Double.parseDouble(baseAttackSpeed.getText());
-        } catch (NumberFormatException e) {
-            baseAttackSpeed.getStyleClass().add("invalid");
-            return;
-        }
+        Double attackSpeed = null;
+        attackSpeed = CalculatorUtil.updateFromText(baseAttackSpeed, attackSpeed);
+        if (attackSpeed == null) {return;}
 
-        cachedActor.setAttackSpeed(attackSpeed);
+        CalculatorUtil.calculator.setPlayerAttackSpeed(attackSpeed);
         updateCalculations();
         ActorAccess.updateActorField(0, "ATTACK_SPEED", attackSpeed);
     }
 
     @FXML
     protected void updateCritChance() {
-        baseCritChance.getStyleClass().remove("invalid");
-        Double critChance;
-        try {
-            critChance = Double.parseDouble(baseCritChance.getText());
-        } catch (NumberFormatException e) {
-            baseCritChance.getStyleClass().add("invalid");
-            return;
-        }
+        Double critChance = null;
+        critChance = CalculatorUtil.updateFromText(baseCritChance, critChance);
+        if (critChance == null) {return;}
 
-        cachedActor.setCriticalHitChance(critChance);
+        CalculatorUtil.calculator.setPlayerCritChance(critChance);
         updateCalculations();
         ActorAccess.updateActorField(0, "CRITICAL_HIT_CHANCE", critChance);
     }
 
+    /** Updates all values at once, used on a button. */
     @FXML
     protected void updateAll() {
         updateAttack();
@@ -108,17 +99,50 @@ public class PlayerStatsController {
         updateCritChance();
     }
 
+    /** Updates the statistics of player actor calculated with items. */
     protected void updateCalculations() {
-        Actor calculated = itemSet1.apply(cachedActor);
+        calcAttack1.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttack(true, 0)));
+        calcAttackSpeed1.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttackSpeed(true, 0)));
+        calcCritChance1.setText(String.valueOf(CalculatorUtil.calculator.getTotalCritChance(true, 0)));
 
-        calcAttack1.setText(String.valueOf(calculated.getAttack()));
-        calcAttackSpeed1.setText(String.valueOf(calculated.getAttackSpeed()));
-        calcCritChance1.setText(String.valueOf(calculated.getCriticalHitChance()));
+        calcAttack2.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttack(true, 1)));
+        calcAttackSpeed2.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttackSpeed(true, 1)));
+        calcCritChance2.setText(String.valueOf(CalculatorUtil.calculator.getTotalCritChance(true, 1)));
+    }
 
-        calculated = itemSet2.apply(cachedActor);
+    // ========== Formulas ==========
 
-        calcAttack2.setText(String.valueOf(calculated.getAttack()));
-        calcAttackSpeed2.setText(String.valueOf(calculated.getAttackSpeed()));
-        calcCritChance2.setText(String.valueOf(calculated.getCriticalHitChance()));
+    /** Opens up a help window for creating formulas. */
+    @FXML
+    private void getHelp() {
+        ComparatorApplication.openHelp();
+    }
+
+    @FXML
+    protected void updateFormulaAttack() {
+        if (CalculatorUtil.setNewFormula(formulaTotalAttack, CalculatorUtil.formulas.totalAttack)) {
+            updateCalculations();
+        }
+    }
+
+    @FXML
+    protected void updateFormulaAttackSpeed() {
+        if (CalculatorUtil.setNewFormula(formulaTotalAttackSpeed, CalculatorUtil.formulas.totalAttackSpeed)) {
+            updateCalculations();
+        }
+    }
+
+    @FXML
+    protected void updateFormulaCritChance() {
+        if (CalculatorUtil.setNewFormula(formulaTotalCritChance, CalculatorUtil.formulas.totalCritChance)) {
+            updateCalculations();
+        }
+    }
+
+    @FXML
+    protected void updateAllFormulas() {
+        updateFormulaAttack();
+        updateFormulaAttackSpeed();
+        updateFormulaCritChance();
     }
 }

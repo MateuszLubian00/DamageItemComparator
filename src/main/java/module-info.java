@@ -7,6 +7,7 @@ module io.github.mateuszlubian00.itemcompare {
 
     opens io.github.mateuszlubian00.itemcompare to javafx.fxml;
     exports io.github.mateuszlubian00.itemcompare;
+    exports io.github.mateuszlubian00.itemcompare.model;
     exports io.github.mateuszlubian00.itemcompare.controller;
     opens io.github.mateuszlubian00.itemcompare.controller to javafx.fxml;
 }

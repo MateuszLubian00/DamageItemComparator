@@ -18,19 +18,9 @@ public class ActorAccess {
 
     private static Actor getActorFromResultSet(ResultSet resultSet) {
         Actor actor = null;
-        try {
-            if (resultSet.next()) {
-                actor = new Actor();
-                actor.setAttack(resultSet.getLong("ATTACK"));
-                actor.setAttackSpeed(resultSet.getDouble("ATTACK_SPEED"));
-                actor.setHP(resultSet.getLong("HP"));
-                actor.setDefense(resultSet.getLong("DEFENSE"));
-                actor.setCriticalHitChance(resultSet.getDouble("CRITICAL_HIT_CHANCE"));
-            }
-        } catch (SQLException e) {
-            System.out.println("There has been a fatal error while accessing result set " + resultSet);
-            System.exit(0);
-        }
+
+        ObservableList<Actor> list = getActorList(resultSet);
+        actor = list.get(0);
 
         return actor;
     }

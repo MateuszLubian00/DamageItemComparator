@@ -1,12 +1,13 @@
 package io.github.mateuszlubian00.itemcompare;
 
-import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
-import io.github.mateuszlubian00.itemcompare.model.ItemAccess;
+import io.github.mateuszlubian00.itemcompare.model.*;
+import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
 import io.github.mateuszlubian00.itemcompare.util.DBUtil;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +17,8 @@ import java.io.IOException;
 
 public class ComparatorApplication extends Application {
 
+    /** Stage used in formula help window. */
+    public static Stage helpStage = null;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -59,7 +62,8 @@ public class ComparatorApplication extends Application {
         sub.getChildren().set(0, g);
     }
 
-    /** Helper method to create a database with some initial data values.
+    /** Helper method to create a database with some initial data values,
+     *  as well as initialize some CalculatorUtil variables.
      *  Normally not needed, but this app uses in-memory database.
      */
     private static void initializeData() {
@@ -92,6 +96,52 @@ public class ComparatorApplication extends Application {
         // Item #3
         ItemAccess.insertItem(2, 10L, 20L, 0L, 0.25D, 0D);
         // TODO: more items
+
+        // Creation of calculator
+        CalculatorUtil.calculator = new StatCalculator(
+                ActorAccess.selectActor(0),
+                ActorAccess.selectActor(1),
+                ItemAccess.selectItem(0),
+                ItemAccess.selectItem(1),
+                ItemAccess.selectItem(2)
+        );
+        // Creation of formulas
+        CalculatorUtil.formulas = new Formulas();
+    }
+
+    /** Opens up a new window that explains how formulas should be formed. Only one window is allowed. */
+    public static void openHelp() {
+        if (helpStage != null) {
+            // Stage was already made, show it
+            helpStage.show();
+            // setIconified == setMinimized
+            // great naming convention
+            helpStage.setIconified(false);
+            helpStage.toFront();
+        } else {
+            try {
+                FXMLLoader xFxmlLoader = new FXMLLoader(ComparatorApplication.class.getResource("help.fxml"));
+                Parent root = xFxmlLoader.load();
+
+                Stage stage = new Stage();
+                stage.setTitle("Formulas Help");
+                stage.setScene(new Scene(root));
+                // same minimum size as the main window
+                stage.setMinWidth(641);
+                stage.setMinHeight(464);
+
+                helpStage = stage;
+                stage.show();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /** Closes the formula help window. */
+    public static void closeHelp() {
+        // Hides the stage, doesn't actually close it
+        helpStage.close();
     }
 
     public static void main(String[] args)  {

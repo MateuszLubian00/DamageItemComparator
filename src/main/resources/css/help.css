@@ -1,0 +1,4 @@
+.table > Label {
+    -fx-padding: 10;
+    -fx-wrap-text: true;
+}

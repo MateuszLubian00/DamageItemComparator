@@ -11,7 +11,7 @@ To build this app yourself, you need JavaFX SDK installed and properly set up. Y
 ### Planned features
 
 Application is still in an early version, so a lot of the features are missing. My plans for future releases include:
-1. Custom formulas to apply bonus statistics.
+1. ~~Custom formulas to apply bonus statistics.~~
 2. Better interface responsiveness. 
 3. Custom effects for items.
 4. Creation of new items.
