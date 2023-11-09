@@ -36,18 +36,9 @@ public class GraphsController {
     protected TextField customSecondsIncrement;
     @FXML
     protected TextField customAttack;
-    protected Actor playerSet1;
-    protected Actor playerSet2;
-    protected Actor enemySet;
 
     @FXML
     protected void initialize() {
-        ObservableList<Actor> actorList = ActorAccess.selectManyActors();
-
-        playerSet1 = CalculatorUtil.calculateWithItem(0).apply(actorList.get(0));
-        playerSet2 = CalculatorUtil.calculateWithItem(1).apply(actorList.get(0));
-        enemySet = CalculatorUtil.calculateWithItem(2).apply(actorList.get(1));
-
         setChart1Attack(chart1Attack);
         setChartAttacks(10, chart10Attacks);
         setChartAttacks(30, chart30Attacks);
