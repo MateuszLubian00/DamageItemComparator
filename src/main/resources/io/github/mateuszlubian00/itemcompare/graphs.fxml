@@ -14,7 +14,7 @@
                <children>
                   <VBox alignment="CENTER" prefWidth="610.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <BarChart fx:id="chart1Attack" title="1 Attack">
+                        <BarChart fx:id="chart1Attack" animated="false" title="1 Attack">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -22,7 +22,7 @@
                             <NumberAxis side="LEFT" />
                           </yAxis>
                         </BarChart>
-                        <AreaChart fx:id="chart10Attacks" title="10 Attacks">
+                        <AreaChart fx:id="chart10Attacks" animated="false" title="10 Attacks">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -30,7 +30,7 @@
                             <NumberAxis side="LEFT" />
                           </yAxis>
                         </AreaChart>
-                        <AreaChart fx:id="chart30Attacks" title="30 Attacks">
+                        <AreaChart fx:id="chart30Attacks" animated="false" title="30 Attacks">
                           <xAxis>
                             <CategoryAxis side="BOTTOM" />
                           </xAxis>
@@ -38,7 +38,7 @@
                             <NumberAxis side="LEFT" />
                           </yAxis>
                         </AreaChart>
-                        <AreaChart fx:id="chart5Seconds" title="5 Seconds of Attacks">
+                        <AreaChart fx:id="chart5Seconds" animated="false" title="5 Seconds of Attacks">
                                    <xAxis>
                               <CategoryAxis side="BOTTOM" />
                            </xAxis>
@@ -46,7 +46,7 @@
                               <NumberAxis side="LEFT" />
                            </yAxis>
                         </AreaChart>
-                        <AreaChart fx:id="chart10Seconds" title="10 Seconds of Attacks">
+                        <AreaChart fx:id="chart10Seconds" animated="false" title="10 Seconds of Attacks">
                            <xAxis>
                               <CategoryAxis side="BOTTOM" />
                            </xAxis>
@@ -66,7 +66,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <AreaChart fx:id="chartCustomAttacks">
+                              <AreaChart fx:id="chartCustomAttacks" animated="false">
                                  <xAxis>
                                     <CategoryAxis maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" side="BOTTOM" />
                                  </xAxis>
@@ -89,7 +89,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <AreaChart fx:id="chartCustomSeconds">
+                              <AreaChart fx:id="chartCustomSeconds" animated="false">
                                  <xAxis>
                                     <CategoryAxis side="BOTTOM" />
                                  </xAxis>

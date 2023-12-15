@@ -25,7 +25,7 @@ public class StatCalculator {
     }
 
     /** Calculates the damage of N amount of attacks */
-    public double[] nextAttacks(int itemID, int attackAmount) {
+    public synchronized double[] nextAttacks(int itemID, int attackAmount) {
         if (attackAmount < 1) {
             return new double[]{0};
         }
@@ -50,6 +50,20 @@ public class StatCalculator {
         }
 
         return damage;
+    }
+
+    public synchronized double[] nextAttacks(int itemID, double attackAmount) {
+        return nextAttacks(itemID, (int) attackAmount);
+    }
+
+    /** Calculates the critical damage dealt by a single attack.
+     *  Used only in GraphsController.oneAttackHelper()
+     */
+    public double nextCritical(int itemID) {
+        long attack = getTotalAttack(true, itemID);
+        double defenseModifier = getDefenseMultiplier(false, 2);
+
+        return (attack * 2) * defenseModifier;
     }
 
     // ========== Returning Total Stats ==========

@@ -1,13 +1,11 @@
 package io.github.mateuszlubian00.itemcompare.util;
 
 import io.github.mateuszlubian00.itemcompare.model.*;
-import javafx.scene.control.Control;
 import javafx.scene.control.TextInputControl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Function;
 
 public class CalculatorUtil {
 
@@ -22,22 +20,6 @@ public class CalculatorUtil {
     /** Same as above, but for number references
      */
     private static final HashSet<String> allowedNums = new HashSet<>(List.of("atk", "atkspd", "crit", "hp", "def", "i_atk", "i_atkspd", "i_crit", "i_hp", "i_def", "e_atk", "e_atkspd", "e_crit", "e_hp", "e_def", "t_atk", "t_atkspd", "t_crit", "t_hp", "t_def"));
-
-    /** Creates a function that applies item statistics to an Actor, returning a new Actor. */
-    public static Function<Actor, Actor> calculateWithItem(Integer itemID){
-        final Item item = ItemAccess.selectItem(itemID);
-        return (actor -> {
-            Actor result = new Actor();
-
-            result.setHP(actor.getHP() + item.getBonusHP());
-            result.setDefense(actor.getDefense() + item.getBonusDefense());
-            result.setAttack(actor.getAttack() + item.getBonusAttack());
-            result.setAttackSpeed(actor.getAttackSpeed() + item.getBonusAttackSpeed());
-            result.setCriticalHitChance(actor.getCriticalHitChance() + item.getBonusCriticalHitChance());
-
-            return result;
-        });
-    }
 
     /** Helper methods to try to gather numbers from input fields.
      *  Also manages css "invalid" class.
