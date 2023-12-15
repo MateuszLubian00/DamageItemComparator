@@ -8,11 +8,11 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="io.github.mateuszlubian00.itemcompare.controller.GraphsController">
    <children>
-      <ScrollPane fitToHeight="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <content>
-            <AnchorPane>
+            <AnchorPane maxWidth="1.7976931348623157E308">
                <children>
-                  <VBox alignment="CENTER" prefWidth="610.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox alignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <BarChart fx:id="chart1Attack" animated="false" title="1 Attack">
                           <xAxis>
@@ -54,7 +54,7 @@
                               <NumberAxis side="LEFT" />
                            </yAxis>
                         </AreaChart>
-                        <VBox alignment="CENTER" maxWidth="610.0">
+                        <VBox alignment="CENTER">
                            <children>
                               <Label styleClass="chart-title" text="Custom Number of Attacks" />
                               <HBox alignment="CENTER" spacing="10.0">
