@@ -9,23 +9,8 @@ import java.util.function.BiFunction;
 
 public class StatCalculator {
 
-    private Actor player;
-    private Actor enemy;
-    private Item item1;
-    private Item item2;
-    private Item item3;
-
-
-    public StatCalculator(Actor player, Actor enemy, Item item1, Item item2, Item item3) {
-        this.player = player;
-        this.enemy = enemy;
-        this.item1 = item1;
-        this.item2 = item2;
-        this.item3 = item3;
-    }
-
     /** Calculates the damage of N amount of attacks */
-    public synchronized double[] nextAttacks(int itemID, int attackAmount) {
+    public static synchronized double[] nextAttacks(int itemID, int attackAmount) {
         if (attackAmount < 1) {
             return new double[]{0};
         }
@@ -52,14 +37,14 @@ public class StatCalculator {
         return damage;
     }
 
-    public synchronized double[] nextAttacks(int itemID, double attackAmount) {
+    public synchronized static double[] nextAttacks(int itemID, double attackAmount) {
         return nextAttacks(itemID, (int) attackAmount);
     }
 
     /** Calculates the critical damage dealt by a single attack.
      *  Used only in GraphsController.oneAttackHelper()
      */
-    public double nextCritical(int itemID) {
+    public static double nextCritical(int itemID) {
         long attack = getTotalAttack(true, itemID);
         double defenseModifier = getDefenseMultiplier(false, 2);
 
@@ -69,8 +54,10 @@ public class StatCalculator {
     // ========== Returning Total Stats ==========
 
     /** Helper method to return any formula with regard to item and unit. */
-    private double getTotalStat(boolean isPlayer, int itemID, Formulas.formula f) {
-        Item item = selectItem(itemID);
+    private synchronized static double getTotalStat(boolean isPlayer, int itemID, Formulas.formula f) {
+        Item item = ItemAccess.selectItem(itemID);
+        Actor player = ActorAccess.selectActor(0);
+        Actor enemy = ActorAccess.selectActor(1);
         // only thing that changes is the unit argument positions
         if (isPlayer) {
             return parseFormula(f, player, enemy, item);
@@ -79,125 +66,35 @@ public class StatCalculator {
         }
     }
 
-    public long getTotalAttack(boolean isPlayer, int itemID) {
+    public static long  getTotalAttack(boolean isPlayer, int itemID) {
         // losing precision when casting to long
         return (long) getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalAttack);
     }
 
-    public double getTotalAttackSpeed(boolean isPlayer, int itemID) {
+    public static double getTotalAttackSpeed(boolean isPlayer, int itemID) {
         return getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalAttackSpeed);
     }
 
-    public double getTotalCritChance(boolean isPlayer, int itemID) {
+    public static double getTotalCritChance(boolean isPlayer, int itemID) {
         return getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalCritChance);
     }
 
-    public long getTotalHP(boolean isPlayer, int itemID) {
+    public static long getTotalHP(boolean isPlayer, int itemID) {
         return (long) getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalHP);
     }
 
-    public long getTotalDefense(boolean isPlayer, int itemID) {
+    public static long getTotalDefense(boolean isPlayer, int itemID) {
         return (long) getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.totalDefense);
     }
 
-    public double getDefenseMultiplier(boolean isPlayer, int itemID) {
+    public static double getDefenseMultiplier(boolean isPlayer, int itemID) {
         return getTotalStat(isPlayer, itemID, CalculatorUtil.formulas.defenseMultiplier);
     }
-
-    // ========== Handling Items ==========
-    private Item selectItem(int ID) {
-        switch (ID) {
-            case 0 -> {return item1;}
-            case 1 -> {return item2;}
-            case 2 -> {return item3;}
-        }
-        System.out.printf("Couldn't find the specified item ID: %s, exiting.\n", ID);
-        System.exit(0);
-        return null;
-    }
-
-    public void setItemAttack(int ID, long attack) {
-        Item item = selectItem(ID);
-        item.setBonusAttack(attack);
-    }
-
-    public long getItemAttack(int ID) {
-        Item item = selectItem(ID);
-        return item.getBonusAttack();
-    }
-
-    public void setItemHP(int ID, long HP) {
-        Item item = selectItem(ID);
-        item.setBonusHP(HP);
-    }
-
-    public long getItemHP(int ID) {
-        Item item = selectItem(ID);
-        return item.getBonusHP();
-    }
-
-    public void setItemDefense(int ID, long defense) {
-        Item item = selectItem(ID);
-        item.setBonusDefense(defense);
-    }
-
-    public long getItemDefense(int ID) {
-        Item item = selectItem(ID);
-        return item.getBonusDefense();
-    }
-
-    public void setItemAttackSpeed(int ID, double attackSpeed) {
-        Item item = selectItem(ID);
-        item.setBonusAttackSpeed(attackSpeed);
-    }
-
-    public double getItemAttackSpeed(int ID) {
-        Item item = selectItem(ID);
-        return item.getBonusAttackSpeed();
-    }
-
-    public void setItemCritChance(int ID, double critChance) {
-        Item item = selectItem(ID);
-        item.setBonusCriticalHitChance(critChance);
-    }
-
-    public double getItemCritChance(int ID) {
-        Item item = selectItem(ID);
-        return item.getBonusCriticalHitChance();
-    }
-
-    // ========== Handling Actors ==========
-
-    // Enemy :
-
-    public void setEnemyHP(long HP) { enemy.setHP(HP); }
-    public long getEnemyHP() { return enemy.getHP(); }
-    public void setEnemyDefense(long defense) { enemy.setDefense(defense); }
-    public long getEnemyDefense() { return enemy.getDefense(); }
-    public void setEnemyAttack(long attack) { enemy.setAttack(attack); }
-    public long getEnemyAttack() { return enemy.getAttack(); }
-    public void setEnemyAttackSpeed(double attackSpeed) { enemy.setAttackSpeed(attackSpeed); }
-    public double getEnemyAttackSpeed() { return enemy.getAttackSpeed(); }
-    public void setEnemyCritChance(double critChance) { enemy.setCriticalHitChance(critChance); }
-    public double getEnemyCritChance() { return enemy.getCriticalHitChance(); }
-
-    // Player :
-
-    public void setPlayerHP(long HP) { player.setHP(HP); }
-    public long getPlayerHP() { return player.getHP(); }
-    public void setPlayerDefense(long defense) { player.setDefense(defense); }
-    public long getPlayerDefense() { return player.getDefense(); }
-    public void setPlayerAttack(long attack) { player.setAttack(attack); }
-    public long getPlayerAttack() { return player.getAttack(); }
-    public void setPlayerAttackSpeed(double attackSpeed) { player.setAttackSpeed(attackSpeed); }
-    public double getPlayerAttackSpeed() { return player.getAttackSpeed(); }
-    public void setPlayerCritChance(double critChance) { player.setCriticalHitChance(critChance); }
-    public double getPlayerCritChance() { return player.getCriticalHitChance(); }
 
     // ========== Formulas ==========
 
     /** Allows to map formula arguments to the correct variables. */
-    private Queue<Double> mapFormulaArgs(String[] args, Actor unit, Actor enemy, Item item) {
+    private static Queue<Double> mapFormulaArgs(String[] args, Actor unit, Actor enemy, Item item) {
         Queue<Double> result = new ArrayDeque<>();
         for (String elem : args) {
             // Manually translating all possible references
@@ -255,14 +152,14 @@ public class StatCalculator {
     }
 
     /** Takes in a formula and selected actors and item to calculate the result. */
-    private double parseFormula(Formulas.formula f, Actor unit, Actor enemy, Item item) {
+    private static double parseFormula(Formulas.formula f, Actor unit, Actor enemy, Item item) {
         Queue<Double> args = mapFormulaArgs(f.getRequirements(), unit, enemy, item);
         Queue<String> text = new ArrayDeque<>(List.of(f.getText().split("\\s+")));
         return parseRecFormula(text, args);
     }
 
     /** Helper method to recursively apply a formula. */
-    private double parseRecFormula(Queue<String> formula, Queue<Double> args) {
+    private static double parseRecFormula(Queue<String> formula, Queue<Double> args) {
         double value = 0d;
         BiFunction<Double, Double, Double> operation = Double::sum;
 

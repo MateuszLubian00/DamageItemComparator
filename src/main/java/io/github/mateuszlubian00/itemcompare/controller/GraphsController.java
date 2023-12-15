@@ -1,5 +1,6 @@
 package io.github.mateuszlubian00.itemcompare.controller;
 
+import io.github.mateuszlubian00.itemcompare.model.StatCalculator;
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
 
 import javafx.application.Platform;
@@ -122,13 +123,13 @@ public class GraphsController {
 
     /** Helper method to get both normal and critical attack of an attack */
     private void oneAttackHelper(int itemID, XYChart.Series<String,Number> set) {
-        double attacks = CalculatorUtil.calculator.nextAttacks(itemID, 1)[0];
-        double critChance = CalculatorUtil.calculator.getTotalCritChance(true, itemID);
+        double attacks = StatCalculator.nextAttacks(itemID, 1)[0];
+        double critChance = StatCalculator.getTotalCritChance(true, itemID);
         if (critChance < 100D) {
             set.getData().add(new XYChart.Data<>("Normal Attack", (attacks)));
         }
         if (critChance > 0D) {
-            attacks = CalculatorUtil.calculator.nextCritical(itemID);
+            attacks = StatCalculator.nextCritical(itemID);
             set.getData().add(new XYChart.Data<>("Critical Attack", (attacks)));
         }
     }
@@ -143,9 +144,9 @@ public class GraphsController {
         set2.get().setName("With Item 2");
 
         ThreadLocal<double[]> damage1 = new ThreadLocal<>();
-        damage1.set(CalculatorUtil.calculator.nextAttacks(0, attacks));
+        damage1.set(StatCalculator.nextAttacks(0, attacks));
         ThreadLocal<double[]> damage2 = new ThreadLocal<>();
-        damage2.set(CalculatorUtil.calculator.nextAttacks(1, attacks));
+        damage2.set(StatCalculator.nextAttacks(1, attacks));
 
         ThreadLocal<Double> total1 = new ThreadLocal<>();
         total1.set(0D);
@@ -174,9 +175,9 @@ public class GraphsController {
         set2.get().setName("With Item 2");
 
         ThreadLocal<Double> attackTime1 = new ThreadLocal<>();
-        attackTime1.set(CalculatorUtil.calculator.getTotalAttackSpeed(true, 0));
+        attackTime1.set(StatCalculator.getTotalAttackSpeed(true, 0));
         ThreadLocal<Double> attackTime2 = new ThreadLocal<>();
-        attackTime2.set(CalculatorUtil.calculator.getTotalAttackSpeed(true, 1));
+        attackTime2.set(StatCalculator.getTotalAttackSpeed(true, 1));
 
         /* Adding 1 to total attacks is a hack to combat imprecision.
         *  Example: adding 0.7 and 0.1 results in 0.799999 attack speed.
@@ -185,10 +186,10 @@ public class GraphsController {
         ThreadLocal<Double> totalAttacks = new ThreadLocal<>();
         totalAttacks.set(seconds * attackTime1.get() + 1);
         ThreadLocal<double[]> attacks1 = new ThreadLocal<>();
-        attacks1.set(CalculatorUtil.calculator.nextAttacks(0, totalAttacks.get()));
+        attacks1.set(StatCalculator.nextAttacks(0, totalAttacks.get()));
         totalAttacks.set(seconds * attackTime2.get() + 1);
         ThreadLocal<double[]> attacks2 = new ThreadLocal<>();
-        attacks2.set(CalculatorUtil.calculator.nextAttacks(1, totalAttacks.get()));
+        attacks2.set(StatCalculator.nextAttacks(1, totalAttacks.get()));
 
         // total damage dealt
         ThreadLocal<Double> total1 = new ThreadLocal<>(), total2 = new ThreadLocal<>();

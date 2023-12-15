@@ -3,6 +3,7 @@ package io.github.mateuszlubian00.itemcompare.controller;
 import io.github.mateuszlubian00.itemcompare.ComparatorApplication;
 import io.github.mateuszlubian00.itemcompare.model.Actor;
 import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
+import io.github.mateuszlubian00.itemcompare.model.StatCalculator;
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
 
 import javafx.fxml.FXML;
@@ -64,7 +65,6 @@ public class PlayerStatsController {
         attack = CalculatorUtil.updateFromText(baseAttack, attack);
         if (attack == null) {return;}
 
-        CalculatorUtil.calculator.setPlayerAttack(attack);
         updateCalculations();
         ActorAccess.updateActorField(0, "ATTACK", attack);
     }
@@ -75,7 +75,6 @@ public class PlayerStatsController {
         attackSpeed = CalculatorUtil.updateFromText(baseAttackSpeed, attackSpeed);
         if (attackSpeed == null) {return;}
 
-        CalculatorUtil.calculator.setPlayerAttackSpeed(attackSpeed);
         updateCalculations();
         ActorAccess.updateActorField(0, "ATTACK_SPEED", attackSpeed);
     }
@@ -86,7 +85,6 @@ public class PlayerStatsController {
         critChance = CalculatorUtil.updateFromText(baseCritChance, critChance);
         if (critChance == null) {return;}
 
-        CalculatorUtil.calculator.setPlayerCritChance(critChance);
         updateCalculations();
         ActorAccess.updateActorField(0, "CRITICAL_HIT_CHANCE", critChance);
     }
@@ -101,13 +99,13 @@ public class PlayerStatsController {
 
     /** Updates the statistics of player actor calculated with items. */
     protected void updateCalculations() {
-        calcAttack1.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttack(true, 0)));
-        calcAttackSpeed1.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttackSpeed(true, 0)));
-        calcCritChance1.setText(String.valueOf(CalculatorUtil.calculator.getTotalCritChance(true, 0)));
+        calcAttack1.setText(String.valueOf(StatCalculator.getTotalAttack(true, 0)));
+        calcAttackSpeed1.setText(String.valueOf(StatCalculator.getTotalAttackSpeed(true, 0)));
+        calcCritChance1.setText(String.valueOf(StatCalculator.getTotalCritChance(true, 0)));
 
-        calcAttack2.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttack(true, 1)));
-        calcAttackSpeed2.setText(String.valueOf(CalculatorUtil.calculator.getTotalAttackSpeed(true, 1)));
-        calcCritChance2.setText(String.valueOf(CalculatorUtil.calculator.getTotalCritChance(true, 1)));
+        calcAttack2.setText(String.valueOf(StatCalculator.getTotalAttack(true, 1)));
+        calcAttackSpeed2.setText(String.valueOf(StatCalculator.getTotalAttackSpeed(true, 1)));
+        calcCritChance2.setText(String.valueOf(StatCalculator.getTotalCritChance(true, 1)));
     }
 
     // ========== Formulas ==========

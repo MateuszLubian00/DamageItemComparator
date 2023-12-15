@@ -3,6 +3,7 @@ package io.github.mateuszlubian00.itemcompare.controller;
 import io.github.mateuszlubian00.itemcompare.ComparatorApplication;
 import io.github.mateuszlubian00.itemcompare.model.Actor;
 import io.github.mateuszlubian00.itemcompare.model.ActorAccess;
+import io.github.mateuszlubian00.itemcompare.model.StatCalculator;
 import io.github.mateuszlubian00.itemcompare.util.CalculatorUtil;
 
 import javafx.fxml.FXML;
@@ -53,7 +54,6 @@ public class EnemiesController {
         health = CalculatorUtil.updateFromText(baseHealth, health);
         if (health == null) {return;}
 
-        CalculatorUtil.calculator.setEnemyHP(health);
         updateCalculations();
         ActorAccess.updateActorField(1, "HP", health);
     }
@@ -64,7 +64,6 @@ public class EnemiesController {
         defense = CalculatorUtil.updateFromText(baseDefense, defense);
         if (defense == null) {return;}
 
-        CalculatorUtil.calculator.setEnemyDefense(defense);
         updateCalculations();
         ActorAccess.updateActorField(1, "DEFENSE", defense);
     }
@@ -79,8 +78,8 @@ public class EnemiesController {
     /** Updates the statistics of enemy actor calculated with item. */
     protected void updateCalculations() {
         // Currently enemy unit has item 3, with ID 2
-        calcHealth.setText(String.valueOf(CalculatorUtil.calculator.getTotalHP(false, 2)));
-        calcDefense.setText(String.valueOf(CalculatorUtil.calculator.getTotalDefense(false, 2)));
+        calcHealth.setText(String.valueOf(StatCalculator.getTotalHP(false, 2)));
+        calcDefense.setText(String.valueOf(StatCalculator.getTotalDefense(false, 2)));
     }
 
     // ========== Formulas ==========

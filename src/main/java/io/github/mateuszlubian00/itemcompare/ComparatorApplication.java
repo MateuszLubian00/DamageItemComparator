@@ -97,14 +97,6 @@ public class ComparatorApplication extends Application {
         ItemAccess.insertItem(2, 10L, 20L, 0L, 0.25D, 0D);
         // TODO: more items
 
-        // Creation of calculator
-        CalculatorUtil.calculator = new StatCalculator(
-                ActorAccess.selectActor(0),
-                ActorAccess.selectActor(1),
-                ItemAccess.selectItem(0),
-                ItemAccess.selectItem(1),
-                ItemAccess.selectItem(2)
-        );
         // Creation of formulas
         CalculatorUtil.formulas = new Formulas();
     }

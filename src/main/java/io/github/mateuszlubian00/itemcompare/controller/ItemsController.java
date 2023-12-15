@@ -57,7 +57,6 @@ public class ItemsController {
         health = CalculatorUtil.updateFromText(itemHealth, health);
         if (health == null) {return;}
 
-        CalculatorUtil.calculator.setItemHP(ID, health);
         ItemAccess.updateItemField(ID, "BONUS_HP", health);
     }
 
@@ -67,7 +66,6 @@ public class ItemsController {
         defense = CalculatorUtil.updateFromText(itemDefense, defense);
         if (defense == null) {return;}
 
-        CalculatorUtil.calculator.setItemDefense(ID, defense);
         ItemAccess.updateItemField(ID, "BONUS_DEFENSE", defense);
     }
 
@@ -77,7 +75,6 @@ public class ItemsController {
         attack = CalculatorUtil.updateFromText(itemAttack, attack);
         if (attack == null) {return;}
 
-        CalculatorUtil.calculator.setItemAttack(ID, attack);
         ItemAccess.updateItemField(ID, "BONUS_ATTACK", attack);
     }
 
@@ -87,7 +84,6 @@ public class ItemsController {
         attackSpeed = CalculatorUtil.updateFromText(itemAttackSpeed, attackSpeed);
         if (attackSpeed == null) {return;}
 
-        CalculatorUtil.calculator.setItemAttackSpeed(ID, attackSpeed);
         ItemAccess.updateItemField(ID, "BONUS_ATTACK_SPEED", attackSpeed);
     }
 
@@ -97,7 +93,6 @@ public class ItemsController {
         critChance = CalculatorUtil.updateFromText(itemCritChance, critChance);
         if (critChance == null) {return;}
 
-        CalculatorUtil.calculator.setItemCritChance(ID, critChance);
         ItemAccess.updateItemField(ID, "BONUS_CRITICAL_HIT_CHANCE", critChance);
     }
 

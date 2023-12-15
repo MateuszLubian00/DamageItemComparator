@@ -9,8 +9,6 @@ import java.util.List;
 
 public class CalculatorUtil {
 
-    /** Stored calculator class for any sort of calculations. */
-    public static StatCalculator calculator = null;
     /** Stored Formulas class to change and use any custom formulas */
     public static Formulas formulas = null;
     /** Helper variable to quickly assess if a String is an allowed operation.
